@@ -142,6 +142,33 @@ public partial class MeshTest : MeshInstance3D
 		mat.Roughness = 0.8f;
 
 		MaterialOverride = mat;
+		
+		// after Mesh = st.Commit(); 
+		if (arrayMesh != null)
+		{
+			// Try to find an existing CollisionShape3D sibling
+			var parent = GetParent() as StaticBody3D;
+			if (parent != null)
+			{
+				CollisionShape3D col = parent.GetNodeOrNull<CollisionShape3D>("CollisionShape3D");
+				if (col == null)
+				{
+					col = new CollisionShape3D();
+					col.Name = "CollisionShape3D";
+					parent.AddChild(col);
+					// Make sure it's inactive in the editor so you don’t get two shapes
+					col.Owner = Owner;
+				}
+
+				// Generate a trimesh collision shape from your mesh
+				col.Shape = arrayMesh.CreateTrimeshShape();
+			}
+			else
+			{
+				GD.PrintErr("MeshTest must be a child of a StaticBody3D for collision to work!");
+			}
+		}
+
 	}
 
 	[Export] public float PlateauT = 0.8f;    // 80% radius flat top
