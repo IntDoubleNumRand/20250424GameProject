@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://w3daf8pa8kdp"]
+
+[ext_resource type="Script" uid="uid://clkqsno368ld6" path="res://scripts/MeshTest.cs" id="1_nnsk1"]
+
+[node name="World" type="Node3D"]
+
+[node name="MeshTest" type="MeshInstance3D" parent="."]
+script = ExtResource("1_nnsk1")
