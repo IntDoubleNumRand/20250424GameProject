@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://bsnllpl6xxwh2"]
 
-[ext_resource type="PackedScene" uid="uid://bs63rbanx2rga" path="res://scenes/player.tscn" id="2_32lhk"]
-[ext_resource type="Script" uid="uid://nd1wrhdb31in" path="res://scenes/GreenGround.cs" id="3_7g83o"]
+[ext_resource type="Script" uid="uid://bpfyrsur7a15k" path="res://addons/debug_camera/scripts/DebugCamera3D.gd" id="3_1lgw5"]
+[ext_resource type="Script" uid="uid://nd1wrhdb31in" path="res://scripts/GameArea.cs" id="3_7g83o"]
 [ext_resource type="PackedScene" uid="uid://dip1qshtdk4ap" path="res://scenes/ground.tscn" id="3_d1c63"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nnsk1"]
@@ -25,17 +25,24 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_4wyf3")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.822442, 0.568849, 0, -0.568849, 0.822442, 4.81554, 3.2923, 11.8219)
-
-[node name="PlayerCore" parent="." instance=ExtResource("2_32lhk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5847, 0)
-
 [node name="GameArea" type="StaticBody3D" parent="."]
 script = ExtResource("3_7g83o")
 
 [node name="Ground" parent="GameArea" instance=ExtResource("3_d1c63")]
+CellSize = 1.0
+MinPatchWidth = 5
+MaxPatchWidth = 15
+MinPatchDepth = 5
+MaxPatchDepth = 15
+MinHillHeight = 1.0
+MaxHillHeight = 4.0
+MinFalloffExponent = 0.3
+MaxFalloffExponent = 0.8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GameArea"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="GameArea"]
+
+[node name="DebugCamera3D" type="Camera3D" parent="GameArea"]
+script = ExtResource("3_1lgw5")
+metadata/_custom_type_script = "uid://bpfyrsur7a15k"

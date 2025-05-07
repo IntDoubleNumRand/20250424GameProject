@@ -1,8 +1,9 @@
+// GameArea.cs
 using Godot;
 using System;
 
 [Tool]
-public partial class GreenGround : StaticBody3D
+public partial class GameArea : StaticBody3D
 {
 	public override void _Ready()
 	{
@@ -36,8 +37,11 @@ public partial class GreenGround : StaticBody3D
 
 		// Slightly offset collider down so it's under the plane
 		collision.Position = new Vector3(0, -0.05f, 0);
-		
+
+		// spawn ground patches within this 100×100 area
 		var spawner = new GroundSpawner();
+		spawner.AreaSize = plane.Size;
+		spawner.CellSize = 12f;
 		AddChild(spawner);
 		spawner.SpawnGroundPatches();
 	}
