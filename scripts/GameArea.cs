@@ -14,7 +14,7 @@ public partial class GameArea : StaticBody3D
 		// Create a plane mesh
 		var plane = new PlaneMesh
 		{
-			Size = new Vector2(100, 100)
+			Size = new Vector2(160, 160)
 		};
 		meshInstance.Mesh = plane;
 
@@ -31,18 +31,19 @@ public partial class GameArea : StaticBody3D
 
 		var shape = new BoxShape3D
 		{
-			Size = new Vector3(100, 0.1f, 100)
+			Size = new Vector3(160, 0.1f, 160)
 		};
 		collision.Shape = shape;
-
-		// Slightly offset collider down so it's under the plane
 		collision.Position = new Vector3(0, -0.05f, 0);
 
-		// spawn ground patches within this 100×100 area
+		// Build and draw the path
+		var path = new Path();
+		path.Draw(this);
+
+		// Spawn patches around it
 		var spawner = new GroundSpawner();
-		spawner.AreaSize = plane.Size;
-		spawner.CellSize = 12f;
 		AddChild(spawner);
+		spawner.Path = path;
 		spawner.SpawnGroundPatches();
 	}
 }

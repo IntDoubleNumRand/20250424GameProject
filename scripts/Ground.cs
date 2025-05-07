@@ -38,28 +38,28 @@ public partial class Ground : StaticBody3D
 		st.Begin(Mesh.PrimitiveType.Triangles);
 
 		Vector2 center = new Vector2(Width * 0.5f, Depth * 0.5f);
-		float maxDist = Mathf.Min(Width, Depth) * 0.5f;
+		float halfW = Width * 0.5f;
+		float halfD = Depth * 0.5f;
 		Vector3 offset = new Vector3(-Width * CellSize * 0.5f + Position.X, 0f, -Depth * CellSize * 0.5f + Position.Z);
-		const float plateauT = 0.8f;
 
 		for (int x = 0; x < Width; x++)
 		{
 			for (int z = 0; z < Depth; z++)
 			{
-				float h0 = EnableHill ? ComputeHeight(x, z, center, maxDist, plateauT) : 0f;
-				float h1 = EnableHill ? ComputeHeight(x + 1, z, center, maxDist, plateauT) : 0f;
-				float h2 = EnableHill ? ComputeHeight(x + 1, z + 1, center, maxDist, plateauT) : 0f;
-				float h3 = EnableHill ? ComputeHeight(x, z + 1, center, maxDist, plateauT) : 0f;
+				float h0 = EnableHill ? ComputeHeight(x,   z,   center, halfW, halfD) : 0f;
+				float h1 = EnableHill ? ComputeHeight(x+1, z,   center, halfW, halfD) : 0f;
+				float h2 = EnableHill ? ComputeHeight(x+1, z+1, center, halfW, halfD) : 0f;
+				float h3 = EnableHill ? ComputeHeight(x,   z+1, center, halfW, halfD) : 0f;
 
-				Vector3 v0 = new Vector3(x * CellSize, h0, z * CellSize) + offset;
-				Vector3 v1 = new Vector3((x + 1) * CellSize, h1, z * CellSize) + offset;
-				Vector3 v2 = new Vector3((x + 1) * CellSize, h2, (z + 1) * CellSize) + offset;
-				Vector3 v3 = new Vector3(x * CellSize, h3, (z + 1) * CellSize) + offset;
+				Vector3 v0 = new Vector3(x  * CellSize, h0, z  * CellSize) + offset;
+				Vector3 v1 = new Vector3((x+1)* CellSize, h1, z  * CellSize) + offset;
+				Vector3 v2 = new Vector3((x+1)* CellSize, h2, (z+1)* CellSize) + offset;
+				Vector3 v3 = new Vector3(x  * CellSize, h3, (z+1)* CellSize) + offset;
 
-				Vector2 uv0 = new Vector2((float)x / Width, (float)z / Depth);
-				Vector2 uv1 = new Vector2((float)(x + 1) / Width, (float)z / Depth);
-				Vector2 uv2 = new Vector2((float)(x + 1) / Width, (float)(z + 1) / Depth);
-				Vector2 uv3 = new Vector2((float)x / Width, (float)(z + 1) / Depth);
+				Vector2 uv0 = new Vector2((float)x   / Width, (float)z   / Depth);
+				Vector2 uv1 = new Vector2((float)(x+1)/ Width, (float)z   / Depth);
+				Vector2 uv2 = new Vector2((float)(x+1)/ Width, (float)(z+1)/ Depth);
+				Vector2 uv3 = new Vector2((float)x   / Width, (float)(z+1)/ Depth);
 
 				Vector3 normal = Vector3.Up;
 				st.SetNormal(normal); st.SetUV(uv0); st.AddVertex(v0);
@@ -76,25 +76,21 @@ public partial class Ground : StaticBody3D
 		_meshInst.Mesh = mesh;
 		_colShape.Shape = mesh.CreateTrimeshShape() as ConcavePolygonShape3D;
 
-		// Apply a random green material
+		// Random green variant
 		var rng = new Random();
 		int choice = rng.Next(1, 11);
 		var mat = GD.Load<StandardMaterial3D>($"res://materials/Green{choice}.tres");
 		_meshInst.MaterialOverride = mat;
 	}
 
-	// Height falloff formula
-	private float ComputeHeight(int xi, int zi, Vector2 center, float maxDist, float plateauT)
+	private float ComputeHeight(int xi, int zi, Vector2 center, float halfW, float halfD)
 	{
 		float dx = xi - center.X;
 		float dz = zi - center.Y;
-		float dist = Mathf.Sqrt(dx * dx + dz * dz);
-		float t = Mathf.Clamp(1f - (dist / maxDist), 0f, 1f);
-
-		if (t >= plateauT)
-			return HillHeight;
-
-		float remap = t / plateauT;
-		return HillHeight * Mathf.Pow(remap, FalloffExponent);
+		float ndx = dx / halfW;
+		float ndz = dz / halfD;
+		float distNorm = Mathf.Sqrt(ndx * ndx + ndz * ndz);
+		float t = Mathf.Clamp(1f - distNorm, 0f, 1f);
+		return Mathf.Pow(t, FalloffExponent) * HillHeight;
 	}
 }

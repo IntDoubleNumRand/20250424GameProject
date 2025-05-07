@@ -29,15 +29,6 @@ environment = SubResource("Environment_4wyf3")
 script = ExtResource("3_7g83o")
 
 [node name="Ground" parent="GameArea" instance=ExtResource("3_d1c63")]
-CellSize = 1.0
-MinPatchWidth = 5
-MaxPatchWidth = 15
-MinPatchDepth = 5
-MaxPatchDepth = 15
-MinHillHeight = 1.0
-MaxHillHeight = 4.0
-MinFalloffExponent = 0.3
-MaxFalloffExponent = 0.8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GameArea"]
 

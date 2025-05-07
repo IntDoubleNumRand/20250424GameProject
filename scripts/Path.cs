@@ -6,11 +6,14 @@ using System.Linq;
 
 public class Path
 {
+	private const int GridSize = 20;
+	private const float GameAreaSize = 160f;
+	private static readonly float WorldCell = GameAreaSize / GridSize;
+
 	private Vector2 _start;
 	private Vector2 _goal;
 	private List<Vector2> _midPoints;
 	private HashSet<Vector2> _pathCells;
-
 	private static Random _rng = new Random();
 
 	public Path()
@@ -20,29 +23,27 @@ public class Path
 
 	private void GeneratePath()
 	{
-		int a = _rng.Next(1, 5); // 1 to 4 inclusive
-		int b;
-
-		// rule: |a-b| >= 2, a and b on the opposite side
-		if (a <= 4)
-			b = _rng.Next(5, 9); // 5 to 8
-		else
-			b = _rng.Next(1, 5); // 1 to 4
-
+		int a = _rng.Next(1, GridSize + 1);
+		int b = a <= GridSize/2
+			? _rng.Next(GridSize/2 + 1, GridSize + 1)
+			: _rng.Next(1, GridSize/2 + 1);
 		while (Math.Abs(a - b) < 2)
-			b = (a <= 4) ? _rng.Next(5, 9) : _rng.Next(1, 5);
+			b = a <= GridSize/2
+				? _rng.Next(GridSize/2 + 1, GridSize + 1)
+				: _rng.Next(1, GridSize/2 + 1);
 
 		_start = new Vector2(a, 1);
-		_goal = new Vector2(b, 8);
+		_goal  = new Vector2(b, GridSize);
 
-		int minMid = Math.Max(1, Math.Min(4, Math.Abs(a - b)));
-		int midCount = _rng.Next(minMid, 5);
+		int diff    = Math.Abs(a - b);
+		int minMid  = Math.Max(1, Math.Min(diff, 4));
+		int count   = _rng.Next(minMid, 5);
 
 		_midPoints = new List<Vector2>();
-		for (int i = 0; i < midCount; i++)
+		for (int i = 0; i < count; i++)
 		{
 			int x = _rng.Next(Math.Min(a, b), Math.Max(a, b) + 1);
-			int y = _rng.Next(3, 7); // [3,6]
+			int y = _rng.Next(3, GridSize);
 			_midPoints.Add(new Vector2(x, y));
 		}
 
@@ -52,22 +53,20 @@ public class Path
 	private void BuildPath()
 	{
 		_pathCells = new HashSet<Vector2>();
-		List<Vector2> allPoints = new List<Vector2> { _start };
-		allPoints.AddRange(_midPoints.OrderBy(p => p.Y)); // top to bottom
-		allPoints.Add(_goal);
+		var pts = new List<Vector2> { _start }
+			.Concat(_midPoints.OrderBy(p => p.Y))
+			.Append(_goal)
+			.ToList();
 
-		for (int i = 0; i < allPoints.Count - 1; i++)
-		{
-			AddLineCells(allPoints[i], allPoints[i + 1]);
-		}
+		for (int i = 0; i < pts.Count - 1; i++)
+			AddLine(pts[i], pts[i+1]);
 	}
 
-	private void AddLineCells(Vector2 from, Vector2 to)
+	private void AddLine(Vector2 from, Vector2 to)
 	{
-		int dx = (int)Math.Sign(to.X - from.X);
-		int dy = (int)Math.Sign(to.Y - from.Y);
-		Vector2 pos = from;
-
+		var pos = from;
+		var dx = Math.Sign(to.X - from.X);
+		var dy = Math.Sign(to.Y - from.Y);
 		while (pos != to)
 		{
 			_pathCells.Add(pos);
@@ -77,9 +76,24 @@ public class Path
 		_pathCells.Add(to);
 	}
 
-	// Getters
-	public Vector2 Start => _start;
-	public Vector2 Goal => _goal;
-	public List<Vector2> MidPoints => _midPoints;
+	// draws each cell as a flat box
+	public void Draw(Node parent)
+	{
+		var mat = GD.Load<StandardMaterial3D>("res://materials/Dirt.tres");
+
+		foreach (var cell in _pathCells)
+		{
+			var inst = new MeshInstance3D();
+			inst.Mesh = new BoxMesh { Size = new Vector3(WorldCell, 0.1f, WorldCell) };
+			inst.MaterialOverride = mat;
+
+			float x = (cell.X - GridSize * 0.5f - 0.5f) * WorldCell;
+			float z = (cell.Y - GridSize * 0.5f - 0.5f) * WorldCell;
+			inst.Position = new Vector3(x, 0.05f, z);
+
+			parent.AddChild(inst);
+		}
+	}
+
 	public HashSet<Vector2> AllPathCells => _pathCells;
 }
