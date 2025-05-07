@@ -4,10 +4,11 @@ using System;
 [Tool]
 public partial class Ground : StaticBody3D
 {
-	private MeshInstance3D    _meshInst;
-	private CollisionShape3D  _colShape;
+	// Internal components
+	private MeshInstance3D   _meshInst;
+	private CollisionShape3D _colShape;
 
-	// Grid & hill parameters 
+	// Grid & hill parameters
 	[Export] public int    Width           { get; set; } = 10;
 	[Export] public int    Depth           { get; set; } = 10;
 	[Export] public float  CellSize        { get; set; } = 1f;
@@ -17,24 +18,21 @@ public partial class Ground : StaticBody3D
 	[Export] public float  FalloffExponent { get; set; } = 0.5f;
 	[Export] public Color  MeshColor       { get; set; } = new(0.2f, 0.4f, 0.1f);
 
-	public override void _Ready()
+	// Assign mesh and collider references
+	public void SetInternalParts(MeshInstance3D meshInst, CollisionShape3D colShape)
 	{
-		// Grab the child nodes
-		_meshInst = GetNode<MeshInstance3D>("MeshInstance3D");
-		_colShape = GetNode<CollisionShape3D>("CollisionShape3D");
-
-		if (Engine.IsEditorHint())
-			GenerateTerrain();
+		_meshInst = meshInst;
+		_colShape = colShape;
 	}
 
-	private void GenerateTerrain()
+	// Main mesh generation function
+	public void GenerateTerrain()
 	{
 		var st = new SurfaceTool();
 		st.Begin(Mesh.PrimitiveType.Triangles);
 
 		Vector2 center = new(Width * 0.5f, Depth * 0.5f);
 		float maxDist = Math.Min(Width, Depth) * 0.5f;
-
 		Vector3 offset = new Vector3(-Width * 0.5f * CellSize, 0f, -Depth * 0.5f * CellSize);
 
 		for (int x = 0; x < Width; x++)
@@ -62,30 +60,14 @@ public partial class Ground : StaticBody3D
 				Vector3 normal = Vector3.Up;
 
 				// First triangle (v0, v1, v2)
-				st.SetNormal(normal);
-				st.SetUV(uv0);
-				st.AddVertex(v0);
-
-				st.SetNormal(normal);
-				st.SetUV(uv1);
-				st.AddVertex(v1);
-
-				st.SetNormal(normal);
-				st.SetUV(uv2);
-				st.AddVertex(v2);
+				st.SetNormal(normal); st.SetUV(uv0); st.AddVertex(v0);
+				st.SetNormal(normal); st.SetUV(uv1); st.AddVertex(v1);
+				st.SetNormal(normal); st.SetUV(uv2); st.AddVertex(v2);
 
 				// Second triangle (v0, v2, v3)
-				st.SetNormal(normal);
-				st.SetUV(uv0);
-				st.AddVertex(v0);
-
-				st.SetNormal(normal);
-				st.SetUV(uv2);
-				st.AddVertex(v2);
-
-				st.SetNormal(normal);
-				st.SetUV(uv3);
-				st.AddVertex(v3);
+				st.SetNormal(normal); st.SetUV(uv0); st.AddVertex(v0);
+				st.SetNormal(normal); st.SetUV(uv2); st.AddVertex(v2);
+				st.SetNormal(normal); st.SetUV(uv3); st.AddVertex(v3);
 			}
 		}
 
@@ -93,7 +75,7 @@ public partial class Ground : StaticBody3D
 		var arrayMesh = st.Commit();
 		_meshInst.Mesh = arrayMesh;
 
-		// Build a concave collision shape from the same SurfaceTool
+		// Build a concave collision shape from the mesh
 		var triShape = arrayMesh.CreateTrimeshShape() as ConcavePolygonShape3D;
 		_colShape.Shape = triShape;
 
@@ -106,19 +88,19 @@ public partial class Ground : StaticBody3D
 		_meshInst.MaterialOverride = mat;
 	}
 
-
+	// Height falloff formula
 	private float ComputeHeight(int xi, int zi, Vector2 center, float maxDist)
 	{
 		float dx = xi - center.X;
 		float dz = zi - center.Y;
-		float dist = Mathf.Sqrt(dx*dx + dz*dz);
+		float dist = Mathf.Sqrt(dx * dx + dz * dz);
 		float t = Mathf.Clamp(1f - (dist / maxDist), 0f, 1f);
 
 		if (t >= PlateauT)
 			return HillHeight;
 
 		float remap = t / PlateauT;
-		float h     = Mathf.Pow(remap, FalloffExponent);
+		float h = Mathf.Pow(remap, FalloffExponent);
 		return HillHeight * h;
 	}
 }

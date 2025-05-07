@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bsnllpl6xxwh2"]
+[gd_scene load_steps=5 format=3 uid="uid://bsnllpl6xxwh2"]
+
+[ext_resource type="PackedScene" uid="uid://c1ubhtphaph43" path="res://scenes/ground_patch.tscn" id="1_kqs1s"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nnsk1"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -23,3 +25,5 @@ environment = SubResource("Environment_4wyf3")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.822442, 0.568849, 0, -0.568849, 0.822442, 4.81554, 3.2923, 11.8219)
+
+[node name="Ground" parent="." instance=ExtResource("1_kqs1s")]
