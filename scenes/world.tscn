@@ -1,10 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://cly70w48x0ewn"]
+[gd_scene load_steps=15 format=3 uid="uid://cly70w48x0ewn"]
 
 [ext_resource type="PackedScene" uid="uid://c5dmb0ow6eelw" path="res://scenes/ground.tscn" id="1_kqs1s"]
 [ext_resource type="Script" uid="uid://cl7au8piyfmks" path="res://addons/debug_camera/scripts/DebugCamera3D.gd" id="2_32lhk"]
 [ext_resource type="Material" uid="uid://cjnd305o3w01" path="res://materials/Green4.tres" id="3_7g83o"]
 [ext_resource type="Script" uid="uid://djqe0dt0n3o4w" path="res://scripts/PlayerController.cs" id="4_d1c63"]
 [ext_resource type="Texture2D" uid="uid://c3x72dw5gklbc" path="res://assets/character_faces_combined.png" id="5_1lgw5"]
+[ext_resource type="Script" uid="uid://vw42epahdk44" path="res://scripts/Sheep.cs" id="6_0uv0p"]
+[ext_resource type="Texture2D" uid="uid://c52s021n75jyn" path="res://assets/sheep_texture.png" id="6_hlk0d"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nnsk1"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -25,6 +27,8 @@ material = ExtResource("3_7g83o")
 
 [sub_resource type="BoxMesh" id="BoxMesh_d1c63"]
 size = Vector3(0.1, 0.1, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0uv0p"]
 
 [node name="World" type="Node3D"]
 
@@ -65,3 +69,18 @@ hframes = 4
 
 [node name="WeaponMesh" type="MeshInstance3D" parent="PlayerController"]
 mesh = SubResource("BoxMesh_d1c63")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+script = ExtResource("6_0uv0p")
+
+[node name="Sprite3D" type="Sprite3D" parent="CharacterBody3D"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+billboard = 2
+texture = ExtResource("6_hlk0d")
+hframes = 4
+
+[node name="Area3D" type="Area3D" parent="CharacterBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Area3D"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+shape = SubResource("SphereShape3D_0uv0p")
