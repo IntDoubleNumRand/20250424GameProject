@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5dmb0ow6eelw"]
+
+[ext_resource type="Script" uid="uid://b17t7u3eyf4sn" path="res://scripts/GroundSpawner.cs" id="1_rii6i"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6o2ah"]
+albedo_color = Color(0.2, 0.4, 0.1, 1)
+metallic = 0.1
+roughness = 0.8
+
+[node name="Ground" type="StaticBody3D"]
+script = ExtResource("1_rii6i")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_6o2ah")
