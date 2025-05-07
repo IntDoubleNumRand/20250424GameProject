@@ -43,8 +43,9 @@ public partial class GroundSpawner : Node3D
 
 		for (int i = 0; i < patchCount; i++)
 		{
-			int wCells = rng.Next(1, 3) * GridSize / 2;
-			int dCells = rng.Next(1, 3) * GridSize / 2;
+			// much smaller patches: 1–2 cells wide/deep
+			int wCells = rng.Next(1, 3);
+			int dCells = rng.Next(1, 3);
 			float cellSize = PathCellSize;
 			float patchW = wCells * cellSize;
 			float patchD = dCells * cellSize;
@@ -61,6 +62,7 @@ public partial class GroundSpawner : Node3D
 
 				var patchRect = new Rect2(new Vector2(x - halfW, z - halfD), new Vector2(patchW, patchD));
 
+				// never overlap an actual path cell
 				bool overlapsPath = false;
 				if (Path != null)
 				{
@@ -76,14 +78,16 @@ public partial class GroundSpawner : Node3D
 					}
 				}
 
-				bool surroundsPath = Path == null || patchRect.Intersects(paddedPathRect);
+				// must sit right next to the path (within one cell), but not overlap it
+				bool adjacentToPath = Path == null || (patchRect.Intersects(paddedPathRect) && !overlapsPath);
 				bool overlapsGameArea = patchRect.Intersects(areaRect);
 
-				bad = overlapsPath || !surroundsPath || !overlapsGameArea;
+				bad = overlapsPath || !adjacentToPath || !overlapsGameArea;
 			}
 			while (bad);
 
-			float hillH = 1.5f;
+			// hill height scaled to patch size so it looks like a bump
+			float hillH = (wCells + dCells) * PathCellSize / 4f;
 			GroundBuilder.Create(this)
 				.SetWidth(wCells)
 				.SetDepth(dCells)
