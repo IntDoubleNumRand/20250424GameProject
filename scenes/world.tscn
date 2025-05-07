@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://cly70w48x0ewn"]
+[gd_scene load_steps=12 format=3 uid="uid://cly70w48x0ewn"]
 
 [ext_resource type="PackedScene" uid="uid://c5dmb0ow6eelw" path="res://scenes/ground.tscn" id="1_kqs1s"]
 [ext_resource type="Script" uid="uid://cl7au8piyfmks" path="res://addons/debug_camera/scripts/DebugCamera3D.gd" id="2_32lhk"]
 [ext_resource type="Material" uid="uid://cjnd305o3w01" path="res://materials/Green4.tres" id="3_7g83o"]
+[ext_resource type="Script" uid="uid://djqe0dt0n3o4w" path="res://scripts/PlayerController.cs" id="4_d1c63"]
+[ext_resource type="Texture2D" uid="uid://c3x72dw5gklbc" path="res://assets/character_faces_combined.png" id="5_1lgw5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nnsk1"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -20,6 +22,9 @@ tonemap_mode = 2
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7g83o"]
 material = ExtResource("3_7g83o")
+
+[sub_resource type="BoxMesh" id="BoxMesh_d1c63"]
+size = Vector3(0.1, 0.1, 1)
 
 [node name="World" type="Node3D"]
 
@@ -48,3 +53,15 @@ shape = SubResource("ConcavePolygonShape3D_32lhk")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 0, 0, 0)
 mesh = SubResource("PlaneMesh_7g83o")
+
+[node name="PlayerController" type="Node3D" parent="."]
+script = ExtResource("4_d1c63")
+
+[node name="Character" type="Sprite3D" parent="PlayerController"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+billboard = 2
+texture = ExtResource("5_1lgw5")
+hframes = 4
+
+[node name="WeaponMesh" type="MeshInstance3D" parent="PlayerController"]
+mesh = SubResource("BoxMesh_d1c63")
