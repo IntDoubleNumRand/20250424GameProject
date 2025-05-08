@@ -12,7 +12,7 @@ public partial class PlayerController : Node3D
 	private Camera3D _camera;
 
 	public override void _Ready()
-	{
+	{		
 		_character = GetNodeOrNull<Sprite3D>(CharacterPath);
 		if (_character == null)
 			_character = GetNodeOrNull<Sprite3D>("CharacterVisual");
@@ -28,8 +28,10 @@ public partial class PlayerController : Node3D
 
 	public override void _Input(InputEvent @event)
 	{
+		GD.Print("Input action 1");
 		if (@event is InputEventMouseButton mb && mb.ButtonIndex == MouseButton.Right && mb.Pressed)
 		{
+			GD.Print("Input action 2");
 			TryPickUpPlant();
 		}
 	}
@@ -92,7 +94,10 @@ public partial class PlayerController : Node3D
 
 		if (result.Count > 0)
 		{
+			GD.Print("Found collider");
 			var collider = result["collider"].As<Node>();
+			GD.Print($"Collided with {result}");
+			GD.Print($"Collided with {collider}");
 			if (collider != null && collider.IsInGroup("Plant"))
 			{
 				GD.Print($"Picked up: {collider.Name}");
