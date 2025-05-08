@@ -18,7 +18,6 @@ public partial class Sheep : CharacterBody3D
 	[Export] public float FollowJitterAmount = 0.3f;
 
 	private Sprite3D _sprite;
-	private Area3D _detectionArea;
 	private Node3D _threat;
 	private Node3D _plantTarget;
 	private Node3D _sheepTarget;
@@ -32,10 +31,6 @@ public partial class Sheep : CharacterBody3D
 	public override void _Ready()
 	{
 		_sprite = GetNode<Sprite3D>("Sprite3D");
-		_detectionArea = GetNode<Area3D>("Area3D");
-
-		_detectionArea.BodyEntered += OnThreatEntered;
-		_detectionArea.BodyExited  += OnThreatExited;
 
 		_scanTimer = new Timer { WaitTime = CheckInterval, Autostart = true };
 		_scanTimer.Timeout += ScanEnvironment;
@@ -109,15 +104,15 @@ public partial class Sheep : CharacterBody3D
 
 	private Vector3 GetFleeDirection()
 	{
-		GD.Print("fleet");
-		if (Velocity.Length() > 0.01f)
-		{
-			return FlatDirection(-Velocity.Normalized());
-		}
-		else
-		{
-			return FlatDirection(GlobalPosition - _threat.GlobalPosition);
-		}
+		if (_threat == null)
+			return Vector3.Zero;
+
+		GD.Print("Fleeing");
+		Vector3 dir;
+
+		dir = GlobalPosition - _threat.GlobalPosition;
+
+		return FlatDirection(dir);
 	}
 
 	private Vector3 GetEatDirection()
@@ -179,6 +174,7 @@ public partial class Sheep : CharacterBody3D
 	{
 		_plantTarget = FindNearestPlant();
 		_sheepTarget = FindNearbySheep();
+		_threat = FindNearestThreat();
 	}
 
 	private Node3D FindNearestPlant()
@@ -222,26 +218,30 @@ public partial class Sheep : CharacterBody3D
 
 		return best;
 	}
+	
+	private Node3D FindNearestThreat()
+	{
+		Node3D closest = null;
+		float bestDist = AvoidDistance;
+
+		foreach (var threat in GetTree().GetNodesInGroup("Threat").OfType<Node3D>())
+		{
+			float dist = GlobalPosition.DistanceTo(threat.GlobalPosition);
+			if (dist < bestDist)
+			{
+				bestDist = dist;
+				closest = threat;
+			}
+		}
+
+		return closest;
+	}
+
 
 	private void EatPlant(Node3D plant)
 	{
 		GD.Print($"{Name} ate a plant at {plant.GlobalPosition}");
 		plant.QueueFree();
-	}
-
-	private void OnThreatEntered(Node body)
-	{
-		if (body.IsInGroup("Threat") && body is Node3D node)
-		{
-			if (GlobalPosition.DistanceTo(node.GlobalPosition) < AvoidDistance)
-				_threat = node;
-		}
-	}
-
-	private void OnThreatExited(Node body)
-	{
-		if (body == _threat)
-			_threat = null;
 	}
 
 	private void ChooseNewWanderTarget()

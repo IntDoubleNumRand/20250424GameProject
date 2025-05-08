@@ -38,7 +38,7 @@ public partial class PlayerController : Node3D
 	{
 		if (_camera == null) return;
 
-		// Project mouse to ground plane (Y = 0)
+		// Project mouse to ground plane (Y = -1.0)
 		Vector2 mousePos = GetViewport().GetMousePosition();
 		Vector3 from = _camera.ProjectRayOrigin(mousePos);
 		Vector3 dir = _camera.ProjectRayNormal(mousePos);

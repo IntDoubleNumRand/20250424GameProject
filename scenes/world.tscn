@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cly70w48x0ewn"]
+[gd_scene load_steps=23 format=3 uid="uid://cly70w48x0ewn"]
 
 [ext_resource type="PackedScene" uid="uid://c5dmb0ow6eelw" path="res://scenes/ground.tscn" id="1_kqs1s"]
 [ext_resource type="Script" uid="uid://cl7au8piyfmks" path="res://addons/debug_camera/scripts/DebugCamera3D.gd" id="2_32lhk"]
@@ -32,8 +32,6 @@ material = ExtResource("3_7g83o")
 size = Vector3(0.1, 0.1, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pdh0q"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_0uv0p"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_pdh0q"]
 
@@ -101,11 +99,6 @@ billboard = 2
 texture = ExtResource("6_hlk0d")
 hframes = 4
 
-[node name="Area3D" type="Area3D" parent="Sheep"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Sheep/Area3D"]
-shape = SubResource("SphereShape3D_0uv0p")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Sheep"]
 shape = SubResource("SphereShape3D_pdh0q")
 
@@ -118,11 +111,6 @@ transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 billboard = 2
 texture = ExtResource("6_hlk0d")
 hframes = 4
-
-[node name="Area3D" type="Area3D" parent="Sheep2"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Sheep2/Area3D"]
-shape = SubResource("SphereShape3D_0uv0p")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Sheep2"]
 shape = SubResource("SphereShape3D_h1bdy")
@@ -137,11 +125,6 @@ billboard = 2
 texture = ExtResource("6_hlk0d")
 hframes = 4
 
-[node name="Area3D" type="Area3D" parent="Sheep3"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Sheep3/Area3D"]
-shape = SubResource("SphereShape3D_0uv0p")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Sheep3"]
 shape = SubResource("SphereShape3D_7c4bj")
 
@@ -155,11 +138,6 @@ billboard = 2
 texture = ExtResource("6_hlk0d")
 hframes = 4
 
-[node name="Area3D" type="Area3D" parent="Sheep4"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Sheep4/Area3D"]
-shape = SubResource("SphereShape3D_0uv0p")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Sheep4"]
 shape = SubResource("SphereShape3D_nrtoj")
 
@@ -172,11 +150,6 @@ transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 billboard = 2
 texture = ExtResource("6_hlk0d")
 hframes = 4
-
-[node name="Area3D" type="Area3D" parent="Sheep5"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Sheep5/Area3D"]
-shape = SubResource("SphereShape3D_0uv0p")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Sheep5"]
 shape = SubResource("SphereShape3D_i4b1j")
