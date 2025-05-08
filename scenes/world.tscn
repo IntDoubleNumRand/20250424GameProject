@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cly70w48x0ewn"]
+[gd_scene load_steps=25 format=3 uid="uid://cly70w48x0ewn"]
 
 [ext_resource type="PackedScene" uid="uid://c5dmb0ow6eelw" path="res://scenes/ground.tscn" id="1_kqs1s"]
 [ext_resource type="Script" uid="uid://cl7au8piyfmks" path="res://addons/debug_camera/scripts/DebugCamera3D.gd" id="2_32lhk"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://djqe0dt0n3o4w" path="res://scripts/PlayerController.cs" id="4_d1c63"]
 [ext_resource type="Texture2D" uid="uid://c3x72dw5gklbc" path="res://assets/character_faces_combined.png" id="5_1lgw5"]
 [ext_resource type="Script" uid="uid://vw42epahdk44" path="res://scripts/Sheep.cs" id="6_0uv0p"]
+[ext_resource type="Texture2D" uid="uid://cn5y60ppjvuul" path="res://assets/crook.png" id="6_h1bdy"]
 [ext_resource type="Texture2D" uid="uid://c52s021n75jyn" path="res://assets/sheep_texture.png" id="6_hlk0d"]
 [ext_resource type="Texture2D" uid="uid://bgi0s57xcwu2a" path="res://assets/red_flower.png" id="8_ygioq"]
 [ext_resource type="Texture2D" uid="uid://do3qbtpkwnp0h" path="res://assets/purple_flower.png" id="9_pdh0q"]
@@ -28,8 +29,8 @@ tonemap_mode = 2
 [sub_resource type="PlaneMesh" id="PlaneMesh_7g83o"]
 material = ExtResource("3_7g83o")
 
-[sub_resource type="BoxMesh" id="BoxMesh_d1c63"]
-size = Vector3(0.1, 0.1, 1)
+[sub_resource type="BoxShape3D" id="BoxShape3D_pdh0q"]
+size = Vector3(0.4, 0.4, 1.6)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pdh0q"]
 
@@ -58,11 +59,12 @@ environment = SubResource("Environment_4wyf3")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.822442, 0.568849, 0, -0.568849, 0.822442, 4.81554, 3.2923, 11.8219)
-visible = false
+current = true
 
 [node name="Ground" parent="." instance=ExtResource("1_kqs1s")]
 
 [node name="DebugCamera3D" type="Camera3D" parent="Ground"]
+visible = false
 script = ExtResource("2_32lhk")
 metadata/_custom_type_script = "uid://cl7au8piyfmks"
 
@@ -78,6 +80,7 @@ mesh = SubResource("PlaneMesh_7g83o")
 [node name="PlayerController" type="Node3D" parent="." groups=["Shepherd"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("4_d1c63")
+WeaponPath = NodePath("Weapon")
 
 [node name="Character" type="Sprite3D" parent="PlayerController"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
@@ -85,8 +88,14 @@ billboard = 2
 texture = ExtResource("5_1lgw5")
 hframes = 4
 
-[node name="WeaponMesh" type="MeshInstance3D" parent="PlayerController" groups=["Threat"]]
-mesh = SubResource("BoxMesh_d1c63")
+[node name="Weapon" type="StaticBody3D" parent="PlayerController" groups=["Threat"]]
+
+[node name="Sprite3D" type="Sprite3D" parent="PlayerController/Weapon"]
+transform = Transform3D(-2.18557e-09, 0, 0.05, 0, 0.04, 0, -0.05, 0, -2.18557e-09, 0, -0.1, -0.05)
+texture = ExtResource("6_h1bdy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerController/Weapon"]
+shape = SubResource("BoxShape3D_pdh0q")
 
 [node name="CollisionBody" type="StaticBody3D" parent="PlayerController"]
 

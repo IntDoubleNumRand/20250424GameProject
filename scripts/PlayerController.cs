@@ -24,6 +24,8 @@ public partial class PlayerController : Node3D
 		_camera = GetViewport().GetCamera3D();
 		if (_camera == null)
 			GD.PushError("Camera3D not found!");
+			
+			
 	}
 
 	public override void _Input(InputEvent @event)

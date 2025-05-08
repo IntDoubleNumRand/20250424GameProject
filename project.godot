@@ -15,17 +15,9 @@ run/main_scene="uid://cly70w48x0ewn"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
-[autoload]
-
-DebugCam="*res://addons/debug_camera/scripts/DebugCamAutoload.gd"
-
 [dotnet]
 
 project/assembly_name="ShepherdGame"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/debug_camera/plugin.cfg")
 
 [rendering]
 
