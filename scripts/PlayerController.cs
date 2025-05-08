@@ -3,83 +3,121 @@ using System;
 
 public partial class PlayerController : Node3D
 {
-	[Export] public NodePath CharacterPath = "Character";
-	[Export] public NodePath WeaponMeshPath = "WeaponMesh";
 	[Export] public float WeaponLength = 2f;
+	[Export] public NodePath CharacterPath = "CharacterVisual";
+	[Export] public NodePath WeaponPath = "WeaponMesh";
 
 	private Sprite3D _character;
-	private MeshInstance3D _weapon;
+	private Node3D _weapon;
 	private Camera3D _camera;
 
 	public override void _Ready()
 	{
-		_character = GetNode<Sprite3D>(CharacterPath);
-		_weapon = GetNode<MeshInstance3D>(WeaponMeshPath);
+		_character = GetNodeOrNull<Sprite3D>(CharacterPath);
+		if (_character == null)
+			_character = GetNodeOrNull<Sprite3D>("CharacterVisual");
 
-		// Automatically get the active Camera3D from the viewport
+		_weapon = GetNodeOrNull<Node3D>(WeaponPath);
+		if (_weapon == null)
+			_weapon = GetNodeOrNull<Node3D>("WeaponMesh");
+
 		_camera = GetViewport().GetCamera3D();
 		if (_camera == null)
-			GD.PrintErr("No Camera3D found in the viewport.");
+			GD.PushError("Camera3D not found!");
+	}
+
+	public override void _Input(InputEvent @event)
+	{
+		if (@event is InputEventMouseButton mb && mb.ButtonIndex == MouseButton.Right && mb.Pressed)
+		{
+			TryPickUpPlant();
+		}
 	}
 
 	public override void _Process(double delta)
 	{
 		if (_camera == null) return;
 
-		// Project mouse position to world space
+		// Project mouse to ground plane (Y = 0)
 		Vector2 mousePos = GetViewport().GetMousePosition();
 		Vector3 from = _camera.ProjectRayOrigin(mousePos);
 		Vector3 dir = _camera.ProjectRayNormal(mousePos);
-		Plane groundPlane = new Plane(Vector3.Up, 0f);
 
-		if (!IntersectRayWithPlane(from, dir, groundPlane, out Vector3 target))
-			return;
+		Plane ground = new Plane(Vector3.Up, -1.0f);
+		if (!IntersectRayWithPlane(from, dir, ground, out var target)) return;
 
-		// Move the PlayerController node so the weapon's tip is at the target
+		// Move player so weapon tip touches the mouse location
 		Vector3 toTarget = (target - GlobalPosition).Normalized();
 		GlobalPosition = target - toTarget * WeaponLength;
 
-		// Rotate to face the mouse point
+		// Rotate player and weapon to face target
 		LookAt(target, Vector3.Up);
-
-		// Position the weapon between character and cursor
 		_weapon.GlobalPosition = GlobalPosition + toTarget * (WeaponLength * 0.5f);
 		_weapon.LookAt(target, Vector3.Up);
 
-		// Update the character's facing sprite
+		// Change face sprite frame
 		UpdateFace(toTarget);
 	}
 
 	private void UpdateFace(Vector3 dir)
 	{
+		if (_character == null) return;
+
 		float angle = Mathf.RadToDeg(Mathf.Atan2(dir.X, dir.Z));
 		int frame;
 
-		if (Mathf.Abs(angle) < 45)           frame = 0; // Front
-		else if (angle > 45 && angle < 135)  frame = 1; // Left
-		else if (Mathf.Abs(angle) > 135)     frame = 2; // Back
-		else                                 frame = 3; // Right
+		if (Mathf.Abs(angle) < 45) frame = 0; // front
+		else if (angle > 45 && angle < 135) frame = 1; // left
+		else if (Mathf.Abs(angle) > 135) frame = 2; // back
+		else frame = 3;  // right
 
 		_character.Frame = frame;
 	}
+	
+	private void TryPickUpPlant()
+	{
+		var mousePos = GetViewport().GetMousePosition();
+		var from = _camera.ProjectRayOrigin(mousePos);
+		var to = from + _camera.ProjectRayNormal(mousePos) * 1000f;
 
-	private bool IntersectRayWithPlane(Vector3 from, Vector3 dir, Plane plane, out Vector3 intersection)
+		var space = GetWorld3D().DirectSpaceState;
+		var query = new PhysicsRayQueryParameters3D
+		{
+			From = from,
+			To = to,
+			CollisionMask = uint.MaxValue
+		};
+
+		var result = space.IntersectRay(query);
+
+		if (result.Count > 0)
+		{
+			var collider = result["collider"].As<Node>();
+			if (collider != null && collider.IsInGroup("Plant"))
+			{
+				GD.Print($"Picked up: {collider.Name}");
+				collider.QueueFree();
+			}
+		}
+	}
+
+	private bool IntersectRayWithPlane(Vector3 from, Vector3 dir, Plane plane, out Vector3 hit)
 	{
 		float denom = plane.Normal.Dot(dir);
 		if (Mathf.Abs(denom) < 0.0001f)
 		{
-			intersection = Vector3.Zero;
+			hit = Vector3.Zero;
 			return false;
 		}
 
 		float t = -(plane.Normal.Dot(from) + plane.D) / denom;
 		if (t < 0)
 		{
-			intersection = Vector3.Zero;
+			hit = Vector3.Zero;
 			return false;
 		}
 
-		intersection = from + dir * t;
+		hit = from + dir * t;
 		return true;
 	}
 }
