@@ -10,6 +10,7 @@ public partial class PlayerController : Node3D
 	private Sprite3D _character;
 	private Node3D _weapon;
 	private Camera3D _camera;
+	private PlayerFacade _player;
 
 	public override void _Ready()
 	{		
@@ -25,7 +26,7 @@ public partial class PlayerController : Node3D
 		if (_camera == null)
 			GD.PushError("Camera3D not found!");
 			
-			
+		_player = new PlayerFacade(_camera, GetViewport(), GetWorld3D());
 	}
 
 	public override void _Input(InputEvent @event)
@@ -34,7 +35,7 @@ public partial class PlayerController : Node3D
 		if (@event is InputEventMouseButton mb && mb.ButtonIndex == MouseButton.Right && mb.Pressed)
 		{
 			GD.Print("Input action 2");
-			TryPickUpPlant();
+			_player.TryPickUpPlant();
 		}
 	}
 
@@ -76,36 +77,6 @@ public partial class PlayerController : Node3D
 		else frame = 3;  // right
 
 		_character.Frame = frame;
-	}
-	
-	private void TryPickUpPlant()
-	{
-		var mousePos = GetViewport().GetMousePosition();
-		var from = _camera.ProjectRayOrigin(mousePos);
-		var to = from + _camera.ProjectRayNormal(mousePos) * 1000f;
-
-		var space = GetWorld3D().DirectSpaceState;
-		var query = new PhysicsRayQueryParameters3D
-		{
-			From = from,
-			To = to,
-			CollisionMask = uint.MaxValue
-		};
-
-		var result = space.IntersectRay(query);
-
-		if (result.Count > 0)
-		{
-			GD.Print("Found collider");
-			var collider = result["collider"].As<Node>();
-			GD.Print($"Collided with {result}");
-			GD.Print($"Collided with {collider}");
-			if (collider != null && collider.IsInGroup("Plant"))
-			{
-				GD.Print($"Picked up: {collider.Name}");
-				collider.QueueFree();
-			}
-		}
 	}
 
 	private bool IntersectRayWithPlane(Vector3 from, Vector3 dir, Plane plane, out Vector3 hit)
