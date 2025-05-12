@@ -38,12 +38,13 @@ shadow_enabled = true
 environment = SubResource("Environment_4wyf3")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.822442, 0.568849, 0, -0.568849, 0.822442, 4.81554, 3.2923, 11.8219)
+transform = Transform3D(1, 0, 0, 0, 0.822442, 0.568849, 0, -0.568849, 0.822442, 5, 5, 81)
 current = true
 
 [node name="Ground" parent="." instance=ExtResource("1_kqs1s")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_32lhk")
