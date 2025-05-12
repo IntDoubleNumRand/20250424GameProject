@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class PlayerController : CharacterBody3D
+public partial class PlayerController : Node3D
 {
 	[Export] public float WeaponLength = 2f;
 	[Export] public NodePath CharacterPath = "CharacterVisual";
@@ -11,11 +11,9 @@ public partial class PlayerController : CharacterBody3D
 	private Node3D _weapon;
 	private Camera3D _camera;
 	private PlayerFacade _player;
-	private float _initialY;
 
 	public override void _Ready()
-	{
-		_initialY = GlobalPosition.Y;
+	{		
 		_character = GetNodeOrNull<Sprite3D>(CharacterPath);
 		if (_character == null)
 			_character = GetNodeOrNull<Sprite3D>("CharacterVisual");
@@ -27,7 +25,7 @@ public partial class PlayerController : CharacterBody3D
 		_camera = GetViewport().GetCamera3D();
 		if (_camera == null)
 			GD.PushError("Camera3D not found!");
-
+			
 		_player = new PlayerFacade(_camera, GetViewport(), GetWorld3D());
 	}
 
@@ -40,36 +38,35 @@ public partial class PlayerController : CharacterBody3D
 			GD.Print("Input action 2: " + Input.MouseMode);
 			Vector2 clickPos = mb.Position;
 			_player.TryPickUpPlant(clickPos);
+			
 		}
 	}
 
-	public override void _PhysicsProcess(double delta)
+	public override void _Process(double delta)
 	{
 		if (_camera == null) return;
 
-		// Project mouse to ground plane at player height
+		// Project mouse to ground plane at current height
 		Vector2 mousePos = GetViewport().GetMousePosition();
 		Vector3 from = _camera.ProjectRayOrigin(mousePos);
 		Vector3 dir = _camera.ProjectRayNormal(mousePos);
 
-		Plane ground = new Plane(Vector3.Up, -_initialY);
+		Plane ground = new Plane(Vector3.Up, -GlobalPosition.Y);
 		if (!IntersectRayWithPlane(from, dir, ground, out var target)) return;
 
-		// Compute move target on XZ plane
-		Vector3 moveDir = (target - GlobalPosition).Normalized();
-		Vector3 desired = target - moveDir * WeaponLength;
-		desired.Y = _initialY;
+		// Move player so weapon tip touches the mouse location, only XZ
+		Vector3 toTarget = (target - GlobalPosition).Normalized();
+		var newPos = target - toTarget * WeaponLength;
+		newPos.Y = GlobalPosition.Y;
+		GlobalPosition = newPos;
 
-		// Move via physics to respect collisions
-		MoveAndCollide(desired - GlobalPosition);
-
-		// Rotate to face target without tilting up/down
-		LookAt(new Vector3(target.X, _initialY, target.Z), Vector3.Up);
-		_weapon.GlobalPosition = GlobalPosition + moveDir * (WeaponLength * 0.5f);
+		// Rotate player and weapon to face target, keep Y level
+		LookAt(new Vector3(target.X, GlobalPosition.Y, target.Z), Vector3.Up);
+		_weapon.GlobalPosition = GlobalPosition + toTarget * (WeaponLength * 0.5f);
 		_weapon.LookAt(new Vector3(target.X, _weapon.GlobalPosition.Y, target.Z), Vector3.Up);
 
 		// Change face sprite frame
-		UpdateFace(moveDir);
+		UpdateFace(toTarget);
 	}
 
 	private void UpdateFace(Vector3 dir)
@@ -82,7 +79,7 @@ public partial class PlayerController : CharacterBody3D
 		if (Mathf.Abs(angle) < 45) frame = 0; // front
 		else if (angle > 45 && angle < 135) frame = 1; // left
 		else if (Mathf.Abs(angle) > 135) frame = 2; // back
-		else frame = 3; // right
+		else frame = 3;  // right
 
 		_character.Frame = frame;
 	}

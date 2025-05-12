@@ -28,18 +28,18 @@ public partial class GroundSpawner : Node3D
 			{
 				float x = (float)rng.NextDouble() * spacing * 4 - spacing * 2;
 				float z = (float)rng.NextDouble() * spacing * 4 - spacing * 2;
-				pos = new Vector3(x, 0f, z);
+				pos = new Vector3(x, -1.0f, z);
 				attempts++;
 			}
 			while (positions.Exists(p => p.DistanceTo(pos) < spacing) && attempts < 100);
 			positions.Add(pos);
 
 			GroundBuilder.Create(this)
-				.SetWidth(rng.Next(5, 16))
-				.SetDepth(rng.Next(5, 16))
+				.SetWidth(rng.Next(30, 40))
+				.SetDepth(rng.Next(10, 50))
 				.SetCellSize(1.0f)
 				.SetEnableHill(true)
-				.SetHillHeight((float)rng.NextDouble() * 5f)
+				.SetHillHeight((float)rng.NextDouble() * 10f)
 				.SetPlateauT(0.7f)
 				.SetFalloffExponent(0.6f)
 				.SetLocation(pos)
