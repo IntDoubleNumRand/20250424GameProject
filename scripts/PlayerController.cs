@@ -31,11 +31,14 @@ public partial class PlayerController : Node3D
 
 	public override void _Input(InputEvent @event)
 	{
-		GD.Print("Input action 1");
+		Input.MouseMode = Input.MouseModeEnum.Visible;
+		GD.Print("Input action 1: " + Input.MouseMode);
 		if (@event is InputEventMouseButton mb && mb.ButtonIndex == MouseButton.Right && mb.Pressed)
 		{
-			GD.Print("Input action 2");
-			_player.TryPickUpPlant();
+			GD.Print("Input action 2: " + Input.MouseMode);
+			Vector2 clickPos = mb.Position;
+			_player.TryPickUpPlant(clickPos);
+			
 		}
 	}
 

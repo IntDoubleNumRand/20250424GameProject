@@ -13,11 +13,12 @@ public class PlayerFacade
 		_world = world;
 	}
 	
-	public void TryPickUpPlant()
+	public void TryPickUpPlant(Vector2 mousePos)
 	{
-		var mousePos = _viewport.GetMousePosition();
+		Input.MouseMode = Input.MouseModeEnum.Visible;
+		GD.Print("Input action 3: " + Input.MouseMode);
 		var from = _camera.ProjectRayOrigin(mousePos);
-		var to = from + _camera.ProjectRayNormal(mousePos) * 1000f;
+		var to   = from + _camera.ProjectRayNormal(mousePos) * 1000f;
 
 		var space = _world.DirectSpaceState;
 		var query = new PhysicsRayQueryParameters3D
@@ -41,5 +42,7 @@ public class PlayerFacade
 				collider.QueueFree();
 			}
 		}
+		Input.MouseMode = Input.MouseModeEnum.Visible;
+		GD.Print("Input action 4: " + Input.MouseMode);
 	}
 }
