@@ -1,6 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://cly70w48x0ewn"]
+[gd_scene load_steps=15 format=3 uid="uid://cly70w48x0ewn"]
 
+[ext_resource type="PackedScene" uid="uid://dh7g5nl6oilvb" path="res://scenes/Grass.tscn" id="1_0uv0p"]
 [ext_resource type="PackedScene" uid="uid://c5dmb0ow6eelw" path="res://scenes/ground.tscn" id="1_kqs1s"]
+[ext_resource type="Script" uid="uid://c3hs8tlgiwsk2" path="res://scripts/Grass.cs" id="2_b3faq"]
 [ext_resource type="Material" uid="uid://cjnd305o3w01" path="res://materials/Green4.tres" id="3_7g83o"]
 [ext_resource type="Script" uid="uid://djqe0dt0n3o4w" path="res://scripts/PlayerController.cs" id="4_d1c63"]
 [ext_resource type="Texture2D" uid="uid://c3x72dw5gklbc" path="res://assets/character_faces_combined.png" id="5_1lgw5"]
@@ -29,6 +31,9 @@ size = Vector3(0.4, 0.4, 1.6)
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pdh0q"]
 
 [node name="World" type="Node3D"]
+
+[node name="Node3D" parent="." instance=ExtResource("1_0uv0p")]
+script = ExtResource("2_b3faq")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
