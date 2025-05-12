@@ -52,7 +52,7 @@ shape = SubResource("ConcavePolygonShape3D_32lhk")
 transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 0, 0, 0)
 mesh = SubResource("PlaneMesh_7g83o")
 
-[node name="PlayerController" type="Node3D" parent="." groups=["Shepherd"]]
+[node name="PlayerController" type="CharacterBody3D" parent="." groups=["Shepherd"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("4_d1c63")
 WeaponPath = NodePath("Weapon")
@@ -72,7 +72,5 @@ texture = ExtResource("6_h1bdy")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerController/Weapon"]
 shape = SubResource("BoxShape3D_pdh0q")
 
-[node name="CollisionBody" type="StaticBody3D" parent="PlayerController"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerController/CollisionBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerController"]
 shape = SubResource("CapsuleShape3D_pdh0q")
