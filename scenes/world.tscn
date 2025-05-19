@@ -59,9 +59,6 @@ transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 0, 0, 0)
 mesh = SubResource("PlaneMesh_7g83o")
 
 [node name="Ground" parent="." instance=ExtResource("1_kqs1s")]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-collision_layer = 255
-collision_mask = 255
 
 [node name="PlayerController" type="CharacterBody3D" parent="." groups=["Shepherd"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
