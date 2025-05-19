@@ -77,9 +77,9 @@ public partial class PlayerController : Node3D
 		int frame;
 
 		if (Mathf.Abs(angle) < 45) frame = 0; // front
-		else if (angle > 45 && angle < 135) frame = 3; // facing left
+		else if (angle > 45 && angle < 135) frame = 1; // facing left
 		else if (Mathf.Abs(angle) > 135) frame = 2; // back
-		else frame = 1;  // facing right
+		else frame = 3;  // facing right
 
 		_character.Frame = frame;
 	}

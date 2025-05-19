@@ -5,8 +5,8 @@
 [ext_resource type="Script" uid="uid://c3hs8tlgiwsk2" path="res://scripts/Grass.cs" id="2_b3faq"]
 [ext_resource type="Material" uid="uid://cjnd305o3w01" path="res://materials/Green4.tres" id="3_7g83o"]
 [ext_resource type="Script" uid="uid://djqe0dt0n3o4w" path="res://scripts/PlayerController.cs" id="4_d1c63"]
-[ext_resource type="Texture2D" uid="uid://c3x72dw5gklbc" path="res://assets/character_faces_combined.png" id="5_1lgw5"]
 [ext_resource type="Texture2D" uid="uid://cn5y60ppjvuul" path="res://assets/crook.png" id="6_h1bdy"]
+[ext_resource type="Texture2D" uid="uid://bru7eh0tnj0p4" path="res://assets/combined_characters.png" id="7_0uv0p"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nnsk1"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -79,7 +79,7 @@ shape = SubResource("BoxShape3D_pdh0q")
 [node name="Character" type="Sprite3D" parent="PlayerController"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 billboard = 2
-texture = ExtResource("5_1lgw5")
+texture = ExtResource("7_0uv0p")
 hframes = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerController"]
