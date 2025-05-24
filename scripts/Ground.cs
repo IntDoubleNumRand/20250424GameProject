@@ -78,7 +78,7 @@ public partial class Ground : StaticBody3D
 		var triShape = arrayMesh.CreateTrimeshShape() as ConcavePolygonShape3D;
 		_colShape.Shape = triShape;
 
-		int idx = new Random().Next(1, 11);
+		int idx = new Random().Next(2, 11);
 		var mat = GD.Load<Material>($"res://materials/Green{idx}.tres");
 		_meshInst.MaterialOverride = mat;
 	}

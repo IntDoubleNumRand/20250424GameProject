@@ -8,6 +8,20 @@ public abstract partial class Animal : CharacterBody3D
 
 	protected Sprite3D Sprite3D;
 	private float _spriteTimer;
+	
+	[Export] public float MaxHealth = 100f;
+	public float Health { get; private set; }
+	private ProgressBar _healthBar;
+	
+	
+	public override void _Ready()
+	{
+		// Initialize health
+		Health = MaxHealth;
+		_healthBar = GetNode<ProgressBar>("HealthBar3D/SubViewport/ProgressBar");
+		_healthBar.MaxValue = MaxHealth;
+		_healthBar.Value    = Health;
+	}
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -35,6 +49,30 @@ public abstract partial class Animal : CharacterBody3D
 				Sprite3D.Frame = frame;
 			}
 		}
+	}
+	
+	public void TakeDamage(float amount)
+	{
+		Health = Mathf.Max(Health - amount, 0f);
+		UpdateHealthBar();
+		if (Health <= 0f) Die();
+	}
+	
+	public void Heal(float amount)
+	{
+		Health = Mathf.Min(Health + amount, MaxHealth);
+		UpdateHealthBar();
+	}
+	
+	private void UpdateHealthBar()
+	{
+		if (_healthBar != null)
+			_healthBar.Value = Health;
+	}
+	
+	protected virtual void Die()
+	{
+		QueueFree();
 	}
 
 	protected abstract Vector3 GetMoveDirection(double delta);

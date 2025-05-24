@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cly70w48x0ewn"]
+[gd_scene load_steps=27 format=3 uid="uid://cly70w48x0ewn"]
 
 [ext_resource type="PackedScene" uid="uid://dh7g5nl6oilvb" path="res://scenes/Grass.tscn" id="1_0uv0p"]
 [ext_resource type="PackedScene" uid="uid://c5dmb0ow6eelw" path="res://scenes/ground.tscn" id="1_kqs1s"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://bru7eh0tnj0p4" path="res://assets/combined_characters.png" id="7_0uv0p"]
 [ext_resource type="Script" uid="uid://vw42epahdk44" path="res://scripts/Sheep.cs" id="10_h1bdy"]
 [ext_resource type="Texture2D" uid="uid://c52s021n75jyn" path="res://assets/sheep_texture.png" id="10_pdh0q"]
+[ext_resource type="Texture2D" uid="uid://bh0j5oddl6lrj" path="res://assets/wolf.png" id="12_7c4bj"]
+[ext_resource type="Script" uid="uid://cb6vpibyhljq2" path="res://scripts/Wolf.cs" id="12_nrtoj"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nnsk1"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -36,8 +38,24 @@ size = Vector3(0.4, 0.4, 1.6)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pdh0q"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_h1bdy"]
-radius = 0.8
+[sub_resource type="SphereShape3D" id="SphereShape3D_h1bdy"]
+radius = 1.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_h1bdy"]
+viewport_path = NodePath("CharacterBody3D/HealthBar3D/SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7c4bj"]
+bg_color = Color(0.2757, 0.2757, 0.2757, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.242966, 0.242966, 0.242966, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nrtoj"]
+bg_color = Color(0.244172, 0.604948, 0.299925, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nrtoj"]
 
 [node name="World" type="Node3D"]
 
@@ -52,7 +70,7 @@ shadow_enabled = true
 environment = SubResource("Environment_4wyf3")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.22325, 0.554912, -0.801394, 0, 0.822144, 0.56928, 0.974761, 0.127092, -0.183544, 5, 5, 81)
+transform = Transform3D(0.755853, 0.372731, -0.538291, 0, 0.822144, 0.56928, 0.654741, -0.430292, 0.621421, 20, 5, 81)
 current = true
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
@@ -98,14 +116,58 @@ hframes = 4
 shape = SubResource("CapsuleShape3D_pdh0q")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 2, 78.51)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 1, 80)
 script = ExtResource("10_h1bdy")
 
 [node name="Sprite3D" type="Sprite3D" parent="CharacterBody3D"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+billboard = 2
 texture = ExtResource("10_pdh0q")
 hframes = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.3448, 0, 50.2983)
-shape = SubResource("CapsuleShape3D_h1bdy")
+shape = SubResource("SphereShape3D_h1bdy")
+
+[node name="HealthBar3D" type="Sprite3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+billboard = 2
+texture = SubResource("ViewportTexture_h1bdy")
+
+[node name="SubViewport" type="SubViewport" parent="CharacterBody3D/HealthBar3D"]
+size = Vector2i(140, 27)
+
+[node name="ProgressBar" type="ProgressBar" parent="CharacterBody3D/HealthBar3D/SubViewport"]
+offset_right = 140.0
+offset_bottom = 27.0
+theme_override_styles/background = SubResource("StyleBoxFlat_7c4bj")
+theme_override_styles/fill = SubResource("StyleBoxFlat_nrtoj")
+value = 50.0
+
+[node name="CharacterBody3D2" type="CharacterBody3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 25, 1, 82)
+script = ExtResource("12_nrtoj")
+
+[node name="Sprite3D" type="Sprite3D" parent="CharacterBody3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
+billboard = 2
+texture = ExtResource("12_7c4bj")
+hframes = 4
+
+[node name="HealthBar3D" type="Sprite3D" parent="CharacterBody3D2"]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 18, 0)
+billboard = 2
+texture = SubResource("ViewportTexture_h1bdy")
+
+[node name="SubViewport" type="SubViewport" parent="CharacterBody3D2/HealthBar3D"]
+size = Vector2i(140, 27)
+
+[node name="ProgressBar" type="ProgressBar" parent="CharacterBody3D2/HealthBar3D/SubViewport"]
+offset_right = 140.0
+offset_bottom = 27.0
+theme_override_styles/background = SubResource("StyleBoxFlat_7c4bj")
+theme_override_styles/fill = SubResource("StyleBoxFlat_nrtoj")
+value = 50.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D2"]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_nrtoj")
