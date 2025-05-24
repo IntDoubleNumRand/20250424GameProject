@@ -49,26 +49,17 @@ public partial class PathMeshBuilder : MeshInstance3D
 				ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded
 			};
 			marker.MaterialOverride = mat;
-
-			marker.GlobalTransform = new Transform3D(Basis.Identity, point);
 			AddChild(marker);
+			marker.GlobalTransform = new Transform3D(Basis.Identity, point);
+			GD.Print($"Global point: {point}");
 		}
 
+		var mesh = BuildPathMesh(points, 2.0f);
+		var meshInstance = new MeshInstance3D();
+		meshInstance.Mesh = mesh;
+		meshInstance.GlobalTransform = Transform3D.Identity;
+		AddChild(meshInstance);
 
-		
-		
-		
-		
-		var mesh = new ImmediateMesh();
-		mesh.ClearSurfaces();
-		mesh.SurfaceBegin(Mesh.PrimitiveType.LineStrip, null);
-		foreach (var p in points)
-			mesh.SurfaceAddVertex(p);
-		mesh.SurfaceEnd();
-		Mesh = mesh;
-
-
-		//Mesh = BuildPathMesh(points, Width);
 		if (Mesh == null)
 			GD.Print("Mesh was null.");
 	}
