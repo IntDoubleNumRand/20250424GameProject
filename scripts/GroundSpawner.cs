@@ -16,7 +16,7 @@ public partial class GroundSpawner : Node3D
 		rng.Randomize();
 
 		Vector3 camPos = new Vector3(5f, 5f, 81f);
-		float excludeRadius = 2f;
+		float excludeRadius = 1f;
 
 		int patchCount = (int)rng.RandiRange(6, 14);
 		float spacing = 8f;

@@ -8,10 +8,10 @@ public class PathOnScreen
 	public const float ScreenWidth = 1152f;
 	
 	public const float ScreenHeight = 648f;
-	private const float StartY = 64.8f;
-	private const float GoalY = ScreenHeight - (64.8f * 2);
-	private const float MidpointTopY = StartY + 64.8f;
-	private const float MidpointBottomY = GoalY - 64.8f;
+	private const float StartY = ScreenHeight - 64.8f;
+	private const float GoalY = 64.8f * 2;
+	private const float MidpointTopY = GoalY + 64.8f;
+	private const float MidpointBottomY = StartY - 64.8f;
 
 	private Vector2 _start;
 	private Vector2 _goal;
@@ -67,7 +67,6 @@ public class PathOnScreen
 			GD.Print(mp);
 		}
 	}
-
 
 	private float RandomFloat(float min, float max)
 	{
