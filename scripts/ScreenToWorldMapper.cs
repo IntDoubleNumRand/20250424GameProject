@@ -9,30 +9,28 @@ public class ScreenToWorldMapper : ICoordinateMapper
 		_camera = camera;
 	}
 
-	public Vector3 Map2Dto3D(Vector2 point2D)
+	// Maps a 2D screen pixel to a 3D point on the ground plane (Y=0), in XZ coordinates
+	public Vector3 Map2Dto3D(Vector2 screenPoint)
 	{
-		Vector2 originalScreenSize = new Vector2(1299f, 648f);
-		// Convert point from original screen space to current viewport
-		Vector2 currentScreenSize = _camera.GetViewport().GetVisibleRect().Size;
-		float scaleX = currentScreenSize.X / originalScreenSize.X;
-		float scaleY = currentScreenSize.Y / originalScreenSize.Y;
-		Vector2 mappedPoint = new Vector2(point2D.X * scaleX, point2D.Y * scaleY);
+		// The screenPoint should be in viewport coordinates (pixels)
+		// If your UI is at a different resolution, rescale accordingly
 
-		// Project ray from scaled screen point
-		Vector3 origin = _camera.ProjectRayOrigin(mappedPoint);
-		Vector3 direction = _camera.ProjectRayNormal(mappedPoint);
+		// Get ray from camera through this pixel
+		Vector3 rayOrigin = _camera.ProjectRayOrigin(screenPoint);
+		Vector3 rayDir = _camera.ProjectRayNormal(screenPoint);
 
-		// Intersect with ground plane at Y = 0
-		Plane groundPlane = new Plane(Vector3.Up, -0f);
-		float denom = groundPlane.Normal.Dot(direction);
-		if (Mathf.Abs(denom) < 0.0001f)
-		{
-			GD.PrintErr("Ray is nearly parallel to ground plane.");
-			return Vector3.Zero;
-		}
+		// Check if rayDir is not pointing downward
+		if (Mathf.Abs(rayDir.Y) < 1e-6)
+			throw new System.Exception("Ray is parallel to ground plane!");
 
-		float t = -(groundPlane.Normal.Dot(origin) + groundPlane.D) / denom;
-		return origin + direction * t;
+		// Find intersection with Y=0 (ground plane)
+		float t = -rayOrigin.Y / rayDir.Y;
+
+		if (t < 0)
+			throw new System.Exception("Intersection is behind the camera.");
+
+		Vector3 intersection = rayOrigin + rayDir * t;
+		// Return in XZ, with Y always 0
+		return new Vector3(intersection.X, 0, intersection.Z);
 	}
-
 }

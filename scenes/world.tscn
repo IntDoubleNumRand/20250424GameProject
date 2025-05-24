@@ -1,10 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://cly70w48x0ewn"]
+[gd_scene load_steps=18 format=3 uid="uid://cly70w48x0ewn"]
 
 [ext_resource type="PackedScene" uid="uid://dh7g5nl6oilvb" path="res://scenes/Grass.tscn" id="1_0uv0p"]
 [ext_resource type="PackedScene" uid="uid://c5dmb0ow6eelw" path="res://scenes/ground.tscn" id="1_kqs1s"]
 [ext_resource type="Script" uid="uid://c3hs8tlgiwsk2" path="res://scripts/Grass.cs" id="2_b3faq"]
 [ext_resource type="Material" uid="uid://cjnd305o3w01" path="res://materials/Green4.tres" id="3_7g83o"]
-[ext_resource type="Script" uid="uid://cqymujupl030o" path="res://scenes/PathMeshBuilder.cs" id="4_b3faq"]
+[ext_resource type="Script" uid="uid://cqymujupl030o" path="res://scripts/PathMeshBuilder.cs" id="4_b3faq"]
 [ext_resource type="Script" uid="uid://djqe0dt0n3o4w" path="res://scripts/PlayerController.cs" id="4_d1c63"]
 [ext_resource type="Material" uid="uid://blg1g22v4cvg6" path="res://materials/Mud.tres" id="5_ygioq"]
 [ext_resource type="Texture2D" uid="uid://cn5y60ppjvuul" path="res://assets/crook.png" id="6_h1bdy"]
@@ -26,6 +26,8 @@ tonemap_mode = 2
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7g83o"]
 material = ExtResource("3_7g83o")
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_ygioq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pdh0q"]
 size = Vector3(0.4, 0.4, 1.6)
@@ -61,12 +63,12 @@ transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 0, 0, 0)
 mesh = SubResource("PlaneMesh_7g83o")
 
 [node name="Path" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("ImmediateMesh_ygioq")
 script = ExtResource("4_b3faq")
 CameraPath = NodePath("../../Camera3D")
 MudMaterial = ExtResource("5_ygioq")
 
 [node name="Ground" parent="." instance=ExtResource("1_kqs1s")]
-visible = false
 
 [node name="PlayerController" type="CharacterBody3D" parent="." groups=["Shepherd"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
