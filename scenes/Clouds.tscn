@@ -1,12 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7knjbb4mape1"]
+[gd_scene load_steps=5 format=3 uid="uid://c7knjbb4mape1"]
 
 [ext_resource type="Script" uid="uid://b7q2w7x0jokic" path="res://scripts/Clouds.cs" id="1_tu1y6"]
+[ext_resource type="Shader" uid="uid://bv3okhauaupkw" path="res://shaders/clouds.gdshader" id="2_docmc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1wuos"]
+resource_local_to_scene = true
+shader = ExtResource("2_docmc")
+shader_parameter/sky_color = Color(0.197431, 0.641751, 0.991494, 1)
+shader_parameter/cloud_color = Color(0.962546, 0.962546, 0.962546, 1)
+shader_parameter/grid_scale = 10.0
+shader_parameter/offset = 5.0
+shader_parameter/breadth = 0
+shader_parameter/wrap = true
+shader_parameter/k = 0.9
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_tu1y6"]
 
 [node name="Clouds" type="Node3D"]
 script = ExtResource("1_tu1y6")
 
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_1wuos")
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="SkySphere" type="MeshInstance3D" parent="."]
 transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, 0, 0, 0)
+visible = false
 mesh = SubResource("PlaneMesh_tu1y6")
