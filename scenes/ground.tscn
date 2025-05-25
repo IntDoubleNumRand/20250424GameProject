@@ -8,6 +8,8 @@ metallic = 0.1
 roughness = 0.8
 
 [node name="Ground" type="StaticBody3D"]
+collision_layer = 255
+collision_mask = 255
 script = ExtResource("1_rii6i")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

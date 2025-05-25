@@ -16,8 +16,6 @@ public class WanderingState : IAnimalState<Sheep>
 	public Vector3 GetMoveDirection(Sheep sheep)
 	{
 		var dir = sheep.WanderTarget - sheep.GlobalPosition;
-		
-		GD.Print ("Pos: " + sheep.GlobalPosition);
 		return sheep.FlatDirection(dir);
 	}
 }

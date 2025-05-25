@@ -37,9 +37,18 @@ public partial class PlayerController : Node3D
 		{
 			GD.Print("Input action 2: " + Input.MouseMode);
 			Vector2 clickPos = mb.Position;
-			_player.TryPickUpPlant(clickPos);
 			
+			Wolf wolf = _player.TryHitWolf(clickPos);
+			if (wolf != null)
+			{
+				GD.Print("Hit a Wolf! Calling TakeDamage(30)");
+				wolf.TakeDamage(30);
+				return;
+			}
+			
+			_player.TryPickUpPlant(clickPos);
 		}
+
 	}
 
 	public override void _Process(double delta)
