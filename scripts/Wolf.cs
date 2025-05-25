@@ -134,7 +134,7 @@ public partial class Wolf : AnimalContext<Wolf>
 
 		public void Enter(Wolf w)
 		{
-			GD.Print("Wolf → Enter EatingState");
+			GD.Print("Wolf Eating");
 			_eatTimer = 0f;
 		}
 
