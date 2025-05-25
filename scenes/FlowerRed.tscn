@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmtyxcpp6c7qr"]
+
+[ext_resource type="Texture2D" uid="uid://bgi0s57xcwu2a" path="res://assets/red_flower.png" id="1_qwb3k"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="FlowerRed" type="Node3D" parent="."]
+transform = Transform3D(-0.05, 0.0866026, 0, -0.0866026, -0.05, 0, 0, 0, 0.1, 0, 0.06, 0)
+
+[node name="Sprite3D" type="Sprite3D" parent="FlowerRed"]
+texture = ExtResource("1_qwb3k")

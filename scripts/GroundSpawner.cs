@@ -9,51 +9,46 @@ public partial class GroundSpawner : Node3D
 	{
 		SpawnGroundPatches();
 	}
-
+	
 	private void SpawnGroundPatches()
 	{
-		var rng = new Random();
+		var rng = new RandomNumberGenerator();
+		rng.Randomize();
 
-		// Random number of patches 
-		int patchCount = rng.Next(6, 15);
+		Vector3 camPos = new Vector3(5f, 5f, 81f);
+		float excludeRadius = 1f;
 
-		// Minimum separation so they don't overlap
-		float spacing = 20f;
-		
+		int patchCount = (int)rng.RandiRange(6, 14);
+		float spacing = 8f;
+
 		var positions = new List<Vector3>();
-
 		GD.Print(patchCount);
 		for (int i = 0; i < patchCount; i++)
 		{
-			// Pick a random position, retry until it's far enough from others
 			Vector3 pos;
 			int attempts = 0;
 			do
 			{
-				float x = (float)rng.NextDouble() * spacing * 4 - spacing * 2;
-				float z = (float)rng.NextDouble() * spacing * 4 - spacing * 2;
-				pos = new Vector3(x, 0f, z);
+				float x = rng.RandfRange(-spacing * 4, spacing * 4);
+				float z = rng.RandfRange(-spacing * 4, spacing * 4);
+				pos = new Vector3(x, -1.0f, z);
 				attempts++;
 			}
-			while (positions.Exists(p => p.DistanceTo(pos) < spacing) && attempts < 100);
-
+			while (
+				(positions.Exists(p => p.DistanceTo(pos) < spacing) || (pos - camPos).Length() < excludeRadius)
+				&& attempts < 100
+			);
 			positions.Add(pos);
 
-			// Generate a unique path for this patch
-			var path = new Path();
-
-			// Build one ground patch with its own path
 			GroundBuilder.Create(this)
-				.SetWidth(15)
-				.SetDepth(15)
+				.SetWidth((int)rng.RandiRange(30, 39))
+				.SetDepth((int)rng.RandiRange(10, 49))
 				.SetCellSize(1.0f)
 				.SetEnableHill(true)
-				.SetHillHeight(3.5f)
+				.SetHillHeight(rng.RandfRange(5f, 13f))
 				.SetPlateauT(0.7f)
 				.SetFalloffExponent(0.6f)
-				.SetColor(new Color(0.9f, 0.1f, 0.1f))
 				.SetLocation(pos)
-				.SetPathCells(path.AllPathCells)
 				.Build();
 		}
 	}

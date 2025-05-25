@@ -15,6 +15,10 @@ run/main_scene="uid://cly70w48x0ewn"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/viewport_width=1299
+
 [dotnet]
 
 project/assembly_name="ShepherdGame"

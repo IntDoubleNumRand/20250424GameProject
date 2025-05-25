@@ -4,8 +4,8 @@ using System;
 public partial class PlayerController : Node3D
 {
 	[Export] public float WeaponLength = 2f;
-	[Export] public NodePath CharacterPath = "CharacterVisual";
-	[Export] public NodePath WeaponPath = "WeaponMesh";
+	[Export] public NodePath CharacterPath = "Character";
+	[Export] public NodePath WeaponPath = "Weapon";
 
 	private Sprite3D _character;
 	private Node3D _weapon;
@@ -16,11 +16,11 @@ public partial class PlayerController : Node3D
 	{		
 		_character = GetNodeOrNull<Sprite3D>(CharacterPath);
 		if (_character == null)
-			_character = GetNodeOrNull<Sprite3D>("CharacterVisual");
+			_character = GetNodeOrNull<Sprite3D>("Character");
 
 		_weapon = GetNodeOrNull<Node3D>(WeaponPath);
 		if (_weapon == null)
-			_weapon = GetNodeOrNull<Node3D>("WeaponMesh");
+			_weapon = GetNodeOrNull<Node3D>("Weapon");
 
 		_camera = GetViewport().GetCamera3D();
 		if (_camera == null)
@@ -37,31 +37,42 @@ public partial class PlayerController : Node3D
 		{
 			GD.Print("Input action 2: " + Input.MouseMode);
 			Vector2 clickPos = mb.Position;
-			_player.TryPickUpPlant(clickPos);
 			
+			Wolf wolf = _player.TryHitWolf(clickPos);
+			if (wolf != null)
+			{
+				GD.Print("Hit a Wolf! Calling TakeDamage(30)");
+				wolf.TakeDamage(30);
+				return;
+			}
+			
+			_player.TryPickUpPlant(clickPos);
 		}
+
 	}
 
 	public override void _Process(double delta)
 	{
 		if (_camera == null) return;
 
-		// Project mouse to ground plane (Y = -1.0)
+		// Project mouse to ground plane at current height
 		Vector2 mousePos = GetViewport().GetMousePosition();
 		Vector3 from = _camera.ProjectRayOrigin(mousePos);
 		Vector3 dir = _camera.ProjectRayNormal(mousePos);
 
-		Plane ground = new Plane(Vector3.Up, -1.0f);
+		Plane ground = new Plane(Vector3.Up, -GlobalPosition.Y);
 		if (!IntersectRayWithPlane(from, dir, ground, out var target)) return;
 
-		// Move player so weapon tip touches the mouse location
+		// Move player so weapon tip touches the mouse location, only XZ
 		Vector3 toTarget = (target - GlobalPosition).Normalized();
-		GlobalPosition = target - toTarget * WeaponLength;
+		var newPos = target - toTarget * WeaponLength;
+		newPos.Y = GlobalPosition.Y;
+		GlobalPosition = newPos;
 
-		// Rotate player and weapon to face target
-		LookAt(target, Vector3.Up);
+		// Rotate player and weapon to face target, keep Y level
+		LookAt(new Vector3(target.X, GlobalPosition.Y, target.Z), Vector3.Up);
 		_weapon.GlobalPosition = GlobalPosition + toTarget * (WeaponLength * 0.5f);
-		_weapon.LookAt(target, Vector3.Up);
+		_weapon.LookAt(new Vector3(target.X, _weapon.GlobalPosition.Y, target.Z), Vector3.Up);
 
 		// Change face sprite frame
 		UpdateFace(toTarget);
@@ -75,9 +86,9 @@ public partial class PlayerController : Node3D
 		int frame;
 
 		if (Mathf.Abs(angle) < 45) frame = 0; // front
-		else if (angle > 45 && angle < 135) frame = 1; // left
+		else if (angle > 45 && angle < 135) frame = 1; // facing left
 		else if (Mathf.Abs(angle) > 135) frame = 2; // back
-		else frame = 3;  // right
+		else frame = 3;  // facing right
 
 		_character.Frame = frame;
 	}

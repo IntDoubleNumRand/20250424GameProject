@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dx22cs2uap0fx"
-path.s3tc="res://.godot/imported/yellow_flower.png-3826056b0dcf7129d6fd657b5744c2ba.s3tc.ctex"
+uid="uid://bh0j5oddl6lrj"
+path.s3tc="res://.godot/imported/wolf.png-2bef2ddb8da61627adc95e7ba428ada9.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/yellow_flower.png"
-dest_files=["res://.godot/imported/yellow_flower.png-3826056b0dcf7129d6fd657b5744c2ba.s3tc.ctex"]
+source_file="res://assets/wolf.png"
+dest_files=["res://.godot/imported/wolf.png-2bef2ddb8da61627adc95e7ba428ada9.s3tc.ctex"]
 
 [params]
 

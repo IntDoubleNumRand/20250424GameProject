@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dh7g5nl6oilvb"]
+
+[ext_resource type="Texture2D" uid="uid://bofi1tbtkhhxb" path="res://assets/grass.png" id="1_wcvhv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wcvhv"]
+size = Vector3(4, 4, 2)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Grass" type="StaticBody3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.1, 0)
+collision_layer = 3
+collision_mask = 3
+
+[node name="Sprite3D" type="Sprite3D" parent="Grass"]
+texture = ExtResource("1_wcvhv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grass"]
+shape = SubResource("BoxShape3D_wcvhv")
