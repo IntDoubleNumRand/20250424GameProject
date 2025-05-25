@@ -109,4 +109,8 @@ vec4 random_vec4(uint seed_state) {
 	);
 }
 
+uint hash_cell(ivec2 c) {
+  return uint(c.x)*73856093u ^ uint(c.y)*19349663u;
+}
+
 #endif // UTIL_RANDOM

@@ -1,6 +1,7 @@
-[gd_scene load_steps=30 format=3 uid="uid://cly70w48x0ewn"]
+[gd_scene load_steps=31 format=3 uid="uid://cly70w48x0ewn"]
 
 [ext_resource type="PackedScene" uid="uid://dh7g5nl6oilvb" path="res://scenes/Grass.tscn" id="1_0uv0p"]
+[ext_resource type="PackedScene" uid="uid://c7knjbb4mape1" path="res://scenes/Clouds.tscn" id="1_i4b1j"]
 [ext_resource type="PackedScene" uid="uid://c5dmb0ow6eelw" path="res://scenes/ground.tscn" id="1_kqs1s"]
 [ext_resource type="Script" uid="uid://c3hs8tlgiwsk2" path="res://scripts/Grass.cs" id="2_b3faq"]
 [ext_resource type="Material" uid="uid://cjnd305o3w01" path="res://materials/Green4.tres" id="3_7g83o"]
@@ -72,6 +73,9 @@ bg_color = Color(0.243137, 0.603922, 0.298039, 1)
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nrtoj"]
 
 [node name="World" type="Node3D"]
+
+[node name="Clouds" parent="." instance=ExtResource("1_i4b1j")]
+transform = Transform3D(-0.51423, -0.306418, 0.530731, 0, 0.69282, 0.4, -0.612836, 0.257115, -0.445336, 250, 0, -300)
 
 [node name="Node3D" parent="." groups=["Plant"] instance=ExtResource("1_0uv0p")]
 script = ExtResource("2_b3faq")

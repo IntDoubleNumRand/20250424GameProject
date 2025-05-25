@@ -2,24 +2,35 @@
 
 [ext_resource type="Shader" uid="uid://bv3okhauaupkw" path="res://shaders/clouds.gdshader" id="2_docmc"]
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_tu1y6"]
+viewport_path = NodePath("Sprite3D/SubViewport")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1wuos"]
 resource_local_to_scene = true
 shader = ExtResource("2_docmc")
 shader_parameter/bg_color = Color(0.28, 0.43, 0.74, 1)
 shader_parameter/fill_color = Color(0.86, 0.82, 0.75, 1)
 shader_parameter/shadow_color = Color(0.68, 0.73, 0.7, 1)
-shader_parameter/shadow_offset = Vector2(0.05, 0.05)
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_tu1y6"]
+shader_parameter/tile_count = Vector2(15, 10)
+shader_parameter/layer1_scale = 0.3
+shader_parameter/layer2_scale = 0.5
+shader_parameter/jitter_amount = 0.4
+shader_parameter/move_dir = Vector2(-1, 1)
+shader_parameter/speed1 = 0.05
+shader_parameter/speed2 = 0.03
+shader_parameter/shadow_offset = Vector2(0.04, 0.035)
+shader_parameter/cluster_scale = 0.7
 
 [node name="Clouds" type="Node3D"]
 
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_1wuos")
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(200, 0, 0, 0, 200, 0, 0, 0, 200, 0, 300, 0)
+texture = SubResource("ViewportTexture_tu1y6")
 
-[node name="SkySphere" type="MeshInstance3D" parent="."]
-transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, 0, 0, 0)
-visible = false
-mesh = SubResource("PlaneMesh_tu1y6")
+[node name="SubViewport" type="SubViewport" parent="Sprite3D"]
+size = Vector2i(800, 400)
+
+[node name="ColorRect" type="ColorRect" parent="Sprite3D/SubViewport"]
+material = SubResource("ShaderMaterial_1wuos")
+offset_right = 800.0
+offset_bottom = 400.0
