@@ -36,6 +36,11 @@ public partial class Sheep : AnimalContext<Sheep>
 		AddChild(_scanTimer);
 
 		AddToGroup("Sheep");
+		SheepManager.Instance?.RegisterSheep(GetInstanceId().ToString(), GlobalPosition);
+		if (SheepManager.Instance == null){
+			GD.Print("null sheep manager");
+		}
+		
 		ChooseNewWanderTarget();
 		ChangeState(WanderingState);
 	}
@@ -112,6 +117,7 @@ public partial class Sheep : AnimalContext<Sheep>
 	protected override void Die()
 	{
 		GD.Print($"{Name} died");
+		SheepManager.Instance?.RecordSheepDeath(GetInstanceId().ToString());
 		base.Die();
 	}
 

@@ -54,6 +54,12 @@ public partial class PlayerController : Node3D
 	public override void _Process(double delta)
 	{
 		if (_camera == null) return;
+		
+		if (Input.IsActionJustPressed("save_sheep"))
+		{
+			SheepManager.Instance?.SaveSheep();
+			GD.Print($"Sheep saved via 'S' key! ({SheepManager.Instance?.GetSheepCount() ?? 0} sheep)");
+		}
 
 		// Project mouse to ground plane at current height
 		Vector2 mousePos = GetViewport().GetMousePosition();

@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://cly70w48x0ewn"]
+[gd_scene load_steps=34 format=3 uid="uid://cly70w48x0ewn"]
 
 [ext_resource type="PackedScene" uid="uid://dh7g5nl6oilvb" path="res://scenes/Grass.tscn" id="1_0uv0p"]
 [ext_resource type="PackedScene" uid="uid://c7knjbb4mape1" path="res://scenes/Clouds.tscn" id="1_i4b1j"]
@@ -40,6 +40,17 @@ size = Vector3(0.4, 0.4, 1.6)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pdh0q"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o1tcx"]
+albedo_color = Color(0.7544, 0.92, 0.82616, 1)
+metallic = 0.93
+roughness = 0.63
+billboard_mode = 2
+
+[sub_resource type="TextMesh" id="TextMesh_rpuxp"]
+material = SubResource("StandardMaterial3D_o1tcx")
+text = "PRESS S FOR SAVING YOUR SHEEP TO FILE"
+font_size = 20
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_h1bdy"]
 radius = 0.6
 
@@ -79,6 +90,7 @@ bg_color = Color(0.243137, 0.603922, 0.298039, 1)
 transform = Transform3D(-0.51423, -0.306418, 0.530731, 0, 0.69282, 0.4, -0.612836, 0.257115, -0.445336, 250, 0, -300)
 
 [node name="CloudShadows" parent="." instance=ExtResource("2_c0d7e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -250, 4.5, 150)
 
 [node name="Node3D" parent="." groups=["Plant"] instance=ExtResource("1_0uv0p")]
 script = ExtResource("2_b3faq")
@@ -135,6 +147,10 @@ hframes = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerController"]
 shape = SubResource("CapsuleShape3D_pdh0q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09, 0)
+mesh = SubResource("TextMesh_rpuxp")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." groups=["Sheep"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 1, 80)
