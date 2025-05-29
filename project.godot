@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="ShepherdGame"
-run/main_scene="uid://cly70w48x0ewn"
+run/main_scene="uid://b80w00bx8hyol"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 SheepManager="*res://scripts/SheepManager.cs"
+GroundSpawner="*res://scripts/GroundSpawner.cs"
 
 [display]
 
