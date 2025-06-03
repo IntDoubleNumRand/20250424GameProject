@@ -21,16 +21,14 @@ public partial class PathMeshBuilder : MeshInstance3D
 		var adapter = new WorldPathAdapter(path, mapper);
 		var points = adapter.GetFullPath();
 		
-		GD.Print("Camera rotation (deg): ", _camera.RotationDegrees);
-		GD.Print("p: ");
-		foreach (var p in points)
-			GD.Print(p);
+		//GD.Print("Camera rotation (deg): ", _camera.RotationDegrees);
+		//GD.Print("p: ");
+		//foreach (var p in points)
+			//GD.Print(p);
 			
 		Vector2 screenSize = GetViewport().GetVisibleRect().Size;
 		GD.Print(screenSize);
 		GD.Print(screenSize);
-			
-
 			
 		foreach(var point in points)
 		{

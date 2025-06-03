@@ -36,7 +36,7 @@ void fragment() {
     vec2 uv_moved = UV + dir * speed * TIME * time_scale;
     vec2 gv = uv_moved * tile_count;
     ivec2 base_cell = ivec2(floor(gv));
-    
+
     float mask = 0.0;
     for (int ox = -1; ox <= 1; ++ox) {
         for (int oy = -1; oy <= 1; ++oy) {
@@ -54,10 +54,10 @@ void fragment() {
             }
         }
     }
-	
+
 	vec3 light_dir = normalize(vec3(light_dir_x, light_dir_y, light_dir_z));
     float NdotL = max(dot(normalize(NORMAL), normalize(-light_dir)), 0.0);
-    
+
     EMISSION = light_color.rgb * NdotL * mask;
     ALPHA = mask * light_color.a;
 }

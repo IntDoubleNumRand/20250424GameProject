@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 SheepManager="*res://scripts/SheepManager.cs"
-GroundSpawner="*res://scripts/GroundSpawner.cs"
 
 [display]
 

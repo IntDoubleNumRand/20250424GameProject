@@ -43,7 +43,7 @@ public class PlayerFacade
 			}
 		}
 		Input.MouseMode = Input.MouseModeEnum.Visible;
-		GD.Print("Input action 4: " + Input.MouseMode);
+		//GD.Print("Input action 4: " + Input.MouseMode);
 	}
 	
 	public Wolf TryHitWolf(Vector2 mousePos)

@@ -22,7 +22,7 @@ public partial class GroundSpawner : Node3D
 		float spacing = 8f;
 
 		var positions = new List<Vector3>();
-		GD.Print(patchCount);
+		GD.Print($"Patch count: {patchCount}");
 		for (int i = 0; i < patchCount; i++)
 		{
 			Vector3 pos;
