@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://b80w00bx8hyol"]
+[gd_scene load_steps=38 format=3 uid="uid://b80w00bx8hyol"]
 
 [ext_resource type="PackedScene" uid="uid://dh7g5nl6oilvb" path="res://scenes/Grass.tscn" id="1_0uv0p"]
 [ext_resource type="PackedScene" uid="uid://c7knjbb4mape1" path="res://scenes/Clouds.tscn" id="1_i4b1j"]
@@ -83,6 +83,18 @@ border_color = Color(0.243137, 0.243137, 0.243137, 1)
 bg_color = Color(0.243137, 0.603922, 0.298039, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nrtoj"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c0d7e"]
+size = Vector3(5, 50, 200)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o1tcx"]
+size = Vector3(100, 50, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rpuxp"]
+size = Vector3(100, 50, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nthub"]
+size = Vector3(5, 50, 200)
 
 [node name="World" type="Node3D"]
 
@@ -214,3 +226,20 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_c0d7e")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D2"]
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_nrtoj")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+shape = SubResource("BoxShape3D_c0d7e")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 100)
+shape = SubResource("BoxShape3D_o1tcx")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="StaticBody3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, -100)
+shape = SubResource("BoxShape3D_rpuxp")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="StaticBody3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 0)
+shape = SubResource("BoxShape3D_nthub")
