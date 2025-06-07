@@ -86,25 +86,26 @@ bg_color = Color(0.243137, 0.603922, 0.298039, 1)
 
 [node name="World" type="Node3D"]
 
-[node name="Clouds" parent="." instance=ExtResource("1_i4b1j")]
-transform = Transform3D(-0.51423, -0.306418, 0.530731, 0, 0.69282, 0.4, -0.612836, 0.257115, -0.445336, 250, 0, -300)
-
-[node name="Shadows" parent="." instance=ExtResource("2_c0d7e")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -250, 29.8955, 150)
-
-[node name="Node3D" parent="." groups=["Plant"] instance=ExtResource("1_0uv0p")]
-script = ExtResource("2_b3faq")
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_4wyf3")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.755853, 0.372731, -0.538291, 0, 0.822144, 0.56928, 0.654741, -0.430292, 0.621421, 20, 5, 81)
+transform = Transform3D(0.755853, 0.372731, -0.538291, 0, 0.822144, 0.56928, 0.654741, -0.430292, 0.62142, 20, 5, 81)
 current = true
+
+[node name="Clouds" parent="." instance=ExtResource("1_i4b1j")]
+transform = Transform3D(-0.51423, -0.306418, 0.530731, 0, 0.69282, 0.4, -0.612836, 0.257115, -0.445336, 250, 0, -300)
+
+[node name="Shadows" parent="." instance=ExtResource("2_c0d7e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -250, 29.8955, 150)
+visible = false
+
+[node name="Node3D" parent="." groups=["Plant"] instance=ExtResource("1_0uv0p")]
+script = ExtResource("2_b3faq")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
@@ -115,7 +116,7 @@ collision_mask = 255
 shape = SubResource("ConcavePolygonShape3D_32lhk")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 0, 0, 0)
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
 mesh = SubResource("PlaneMesh_7g83o")
 
 [node name="Path" type="MeshInstance3D" parent="StaticBody3D"]
@@ -123,7 +124,6 @@ mesh = SubResource("ImmediateMesh_ygioq")
 script = ExtResource("4_b3faq")
 CameraPath = NodePath("../../Camera3D")
 MudMaterial = ExtResource("5_ygioq")
-Width = 1.5
 
 [node name="Ground" parent="." instance=ExtResource("1_kqs1s")]
 

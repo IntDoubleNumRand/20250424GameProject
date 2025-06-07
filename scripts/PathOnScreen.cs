@@ -57,7 +57,7 @@ public class PathOnScreen
 			_midPoints.Add(new Vector2(x, y));
 		}
 
-		_midPoints.Sort((u, v) => u.Y.CompareTo(v.Y));
+		_midPoints.Sort((u, v) => v.Y.CompareTo(u.Y));
 
 		GD.Print("Start: " + _start);
 		GD.Print("Goal: " + _goal);

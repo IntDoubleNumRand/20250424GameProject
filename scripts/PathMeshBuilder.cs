@@ -23,10 +23,10 @@ public partial class PathMeshBuilder : MeshInstance3D
 		var worldPoints = adapter.GetFullPath();
 		
 		var camPos = _camera.GlobalTransform.Origin;
+		var camXZ = new Vector2(camPos.X, camPos.Z);
+		
 		var startPoint = worldPoints[0];
-		var rest = worldPoints.Skip(1)
-			.OrderBy(p => p.DistanceTo(camPos))
-			.ToList();
+		var rest = worldPoints.Skip(1).ToList();
 		var sortedWorldPoints = new List<Vector3> { startPoint };
 		sortedWorldPoints.AddRange(rest);
 
@@ -72,7 +72,7 @@ public partial class PathMeshBuilder : MeshInstance3D
 		if (Mesh == null)
 			GD.Print("Mesh was null.");
 	}
-
+	
 	private Mesh BuildPathMesh(List<Vector3> points, float width)
 	{
 		if (points.Count < 2)
@@ -87,39 +87,59 @@ public partial class PathMeshBuilder : MeshInstance3D
 
 		var st = new SurfaceTool();
 		st.Begin(Mesh.PrimitiveType.Triangles);
+		st.SetMaterial(matCopy ?? MudMaterial);
 
-		if (matCopy != null)
-			st.SetMaterial(matCopy);
-		else
-			st.SetMaterial(MudMaterial);
+		float half = width * 0.5f;
 
 		for (int i = 0; i < points.Count - 1; i++)
 		{
 			var p1 = points[i];
 			var p2 = points[i + 1];
-			var dir = (p2 - p1).Normalized();
-			var right = new Vector3(-dir.Z, 0f, dir.X).Normalized();
-			var half = width * 0.5f;
+			var dir1 = (p2 - p1).Normalized();
+			var right1 = new Vector3(-dir1.Z, 0f, dir1.X).Normalized();
 
-			var leftA = p1 - right * half;
-			var rightA = p1 + right * half;
-			var leftB = p2 - right * half;
-			var rightB = p2 + right * half;
-			
-			leftA.Y = 0.1f;
-			rightA.Y = 0.1f;
-			leftB.Y = 0.1f;
-			rightB.Y = 0.1f;
+			// corners
+			var leftA1 = p1 - right1 * half;
+			var rightA1 = p1 + right1 * half;
+			var leftB1 = p2 - right1 * half;
+			var rightB1 = p2 + right1 * half;
+			leftA1.Y = rightA1.Y = leftB1.Y = rightB1.Y = 0.001f;
 
-			st.AddVertex(leftA);
-			st.AddVertex(leftB);
-			st.AddVertex(rightA);
+			st.AddVertex(leftA1);
+			st.AddVertex(leftB1);
+			st.AddVertex(rightA1);
 
-			st.AddVertex(rightA);
-			st.AddVertex(leftB);
-			st.AddVertex(rightB);
+			st.AddVertex(rightA1);
+			st.AddVertex(leftB1);
+			st.AddVertex(rightB1);
+
+			if (i < points.Count - 2)
+			{
+				var p3 = points[i + 2];
+				var dir2 = (p3 - p2).Normalized();
+				var right2 = new Vector3(-dir2.Z, 0f, dir2.X).Normalized();
+
+				var leftA2 = p2 - right2 * half;
+				var rightA2 = p2 + right2 * half;
+				leftA2.Y = rightA2.Y = 0.001f;
+				var p2Cap = new Vector3(p2.X, 0.001f, p2.Z);
+
+				var cross = dir1.Cross(dir2);
+
+				if (cross.Y > 0)
+				{
+					st.AddVertex(rightB1);
+					st.AddVertex(p2Cap);
+					st.AddVertex(rightA2);
+				}
+				else if (cross.Y < 0)
+				{
+					st.AddVertex(leftA2);
+					st.AddVertex(p2Cap);
+					st.AddVertex(leftB1);
+				}
+			}
 		}
-
 		st.GenerateNormals();
 		st.Index();
 		return st.Commit();
