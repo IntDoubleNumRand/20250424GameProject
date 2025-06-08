@@ -12,7 +12,9 @@
 [ext_resource type="Script" uid="uid://vw42epahdk44" path="res://scripts/Sheep.cs" id="10_h1bdy"]
 [ext_resource type="Texture2D" uid="uid://c52s021n75jyn" path="res://assets/sheep_texture.png" id="10_pdh0q"]
 [ext_resource type="Texture2D" uid="uid://bh0j5oddl6lrj" path="res://assets/wolf.png" id="12_7c4bj"]
+[ext_resource type="StyleBox" uid="uid://cp1035gwbrp7r" path="res://assets/ProgressBarBG.tres" id="12_c0d7e"]
 [ext_resource type="Script" uid="uid://cb6vpibyhljq2" path="res://scripts/Wolf.cs" id="12_nrtoj"]
+[ext_resource type="StyleBox" uid="uid://b33xmu3lks6eb" path="res://assets/ProgressBarFill.tres" id="13_o1tcx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nnsk1"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -38,17 +40,6 @@ radius = 0.6
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_i4b1j"]
 viewport_path = NodePath("CharacterBody3D/HealthBar3D/SubViewport")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7c4bj"]
-bg_color = Color(0.2757, 0.2757, 0.2757, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.242966, 0.242966, 0.242966, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nrtoj"]
-bg_color = Color(0.244172, 0.604948, 0.299925, 1)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_nrtoj"]
 viewport_path = NodePath("CharacterBody3D2/HealthBar3D/SubViewport")
@@ -151,8 +142,8 @@ size = Vector2i(140, 27)
 [node name="ProgressBar" type="ProgressBar" parent="CharacterBody3D/HealthBar3D/SubViewport"]
 offset_right = 140.0
 offset_bottom = 27.0
-theme_override_styles/background = SubResource("StyleBoxFlat_7c4bj")
-theme_override_styles/fill = SubResource("StyleBoxFlat_nrtoj")
+theme_override_styles/background = ExtResource("12_c0d7e")
+theme_override_styles/fill = ExtResource("13_o1tcx")
 value = 20.0
 
 [node name="CharacterBody3D2" type="CharacterBody3D" parent="." groups=["Wolf"]]
