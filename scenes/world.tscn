@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://b80w00bx8hyol"]
+[gd_scene load_steps=32 format=3 uid="uid://b80w00bx8hyol"]
 
 [ext_resource type="PackedScene" uid="uid://dh7g5nl6oilvb" path="res://scenes/Grass.tscn" id="1_0uv0p"]
 [ext_resource type="PackedScene" uid="uid://c7knjbb4mape1" path="res://scenes/Clouds.tscn" id="1_i4b1j"]
@@ -7,10 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://b5tco3g5xfhdf" path="res://scenes/Shadows.tscn" id="2_c0d7e"]
 [ext_resource type="Material" uid="uid://cjnd305o3w01" path="res://materials/Green1.tres" id="3_7g83o"]
 [ext_resource type="Script" uid="uid://cqymujupl030o" path="res://scripts/PathMeshBuilder.cs" id="4_b3faq"]
-[ext_resource type="Script" uid="uid://djqe0dt0n3o4w" path="res://scripts/PlayerController.cs" id="4_d1c63"]
 [ext_resource type="Material" uid="uid://blg1g22v4cvg6" path="res://materials/Mud.tres" id="5_ygioq"]
-[ext_resource type="Texture2D" uid="uid://cn5y60ppjvuul" path="res://assets/crook.png" id="6_h1bdy"]
-[ext_resource type="Texture2D" uid="uid://bru7eh0tnj0p4" path="res://assets/combined_characters.png" id="7_0uv0p"]
+[ext_resource type="PackedScene" uid="uid://e56468a0wh78" path="res://scenes/Player.tscn" id="9_nrtoj"]
 [ext_resource type="Script" uid="uid://vw42epahdk44" path="res://scripts/Sheep.cs" id="10_h1bdy"]
 [ext_resource type="Texture2D" uid="uid://c52s021n75jyn" path="res://assets/sheep_texture.png" id="10_pdh0q"]
 [ext_resource type="Texture2D" uid="uid://bh0j5oddl6lrj" path="res://assets/wolf.png" id="12_7c4bj"]
@@ -34,22 +32,6 @@ tonemap_mode = 2
 material = ExtResource("3_7g83o")
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_ygioq"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_pdh0q"]
-size = Vector3(0.4, 0.4, 1.6)
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pdh0q"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o1tcx"]
-albedo_color = Color(0.7544, 0.92, 0.82616, 1)
-metallic = 0.93
-roughness = 0.63
-billboard_mode = 2
-
-[sub_resource type="TextMesh" id="TextMesh_rpuxp"]
-material = SubResource("StandardMaterial3D_o1tcx")
-text = "PRESS S FOR SAVING YOUR SHEEP TO FILE"
-font_size = 20
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_h1bdy"]
 radius = 0.6
@@ -138,31 +120,8 @@ MudMaterial = ExtResource("5_ygioq")
 
 [node name="Ground" parent="." instance=ExtResource("1_kqs1s")]
 
-[node name="PlayerController" type="CharacterBody3D" parent="." groups=["Shepherd"]]
+[node name="PlayerController" parent="." instance=ExtResource("9_nrtoj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-script = ExtResource("4_d1c63")
-
-[node name="Weapon" type="StaticBody3D" parent="PlayerController" groups=["Threat"]]
-
-[node name="Sprite3D" type="Sprite3D" parent="PlayerController/Weapon"]
-transform = Transform3D(-2.18557e-09, 0, 0.05, 0, 0.04, 0, -0.05, 0, -2.18557e-09, 0, -0.1, -0.05)
-texture = ExtResource("6_h1bdy")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerController/Weapon"]
-shape = SubResource("BoxShape3D_pdh0q")
-
-[node name="Character" type="Sprite3D" parent="PlayerController"]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
-billboard = 2
-texture = ExtResource("7_0uv0p")
-hframes = 4
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerController"]
-shape = SubResource("CapsuleShape3D_pdh0q")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerController"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09, 0)
-mesh = SubResource("TextMesh_rpuxp")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." groups=["Sheep"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 1, 80)

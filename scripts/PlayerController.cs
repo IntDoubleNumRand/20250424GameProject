@@ -33,21 +33,29 @@ public partial class PlayerController : Node3D
 	{
 		Input.MouseMode = Input.MouseModeEnum.Visible;
 		//GD.Print("Input action 1: " + Input.MouseMode);
-		if (@event is InputEventMouseButton mb && mb.ButtonIndex == MouseButton.Right && mb.Pressed)
+		if (@event is InputEventMouseButton mb && mb.Pressed)
 		{
 			//GD.Print("Input action 2: " + Input.MouseMode);
 			Vector2 clickPos = mb.Position;
 			
-			Wolf wolf = _player.TryHitWolf(clickPos);
-			if (wolf != null)
+			if (mb.ButtonIndex == MouseButton.Right)
 			{
-				GD.Print("Hit a Wolf! Calling TakeDamage(30)");
-				wolf.TakeDamage(30);
-				return;
+				GD.Print("Mouse is right clicked once.");
+				Wolf wolf = _player.TryHitWolf(clickPos);
+				if (wolf != null)
+				{
+					GD.Print("Hit a Wolf! Calling TakeDamage(30)");
+					wolf.TakeDamage(30);
+					return;
+				}
 			}
-			
+			if (mb.ButtonIndex == MouseButton.Left)
+			{
+				GD.Print("Mouse is left clicked once.");
+			}
 			_player.TryPickUpPlant(clickPos);
 		}
+		
 
 	}
 
@@ -91,10 +99,10 @@ public partial class PlayerController : Node3D
 		float angle = Mathf.RadToDeg(Mathf.Atan2(dir.X, dir.Z));
 		int frame;
 
-		if (Mathf.Abs(angle) < 45) frame = 0; // front
-		else if (angle > 45 && angle < 135) frame = 1; // facing left
-		else if (Mathf.Abs(angle) > 135) frame = 2; // back
-		else frame = 3;  // facing right
+		if (Mathf.Abs(angle) < 45) frame = 2; // front
+		else if (angle > 45 && angle < 135) frame = 3; // facing left
+		else if (Mathf.Abs(angle) > 135) frame = 0; // back
+		else frame = 1;  // facing right
 
 		_character.Frame = frame;
 	}

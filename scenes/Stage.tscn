@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b1va324lkdoyl"]
+[gd_scene load_steps=22 format=3 uid="uid://b1va324lkdoyl"]
 
 [ext_resource type="Material" uid="uid://cjnd305o3w01" path="res://materials/Green1.tres" id="1_b1dnq"]
 [ext_resource type="Script" uid="uid://debvkgocht8cj" path="res://scripts/Stage.cs" id="1_e0kik"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b5tco3g5xfhdf" path="res://scenes/Shadows.tscn" id="3_g44ew"]
 [ext_resource type="Script" uid="uid://cqymujupl030o" path="res://scripts/PathMeshBuilder.cs" id="5_ywoxc"]
 [ext_resource type="Material" uid="uid://blg1g22v4cvg6" path="res://materials/Mud.tres" id="6_gldam"]
+[ext_resource type="PackedScene" uid="uid://e56468a0wh78" path="res://scenes/Player.tscn" id="7_gldam"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g44ew"]
 sky_top_color = Color(0.52149, 0.691767, 0.979265, 1)
@@ -136,3 +137,6 @@ mesh = SubResource("ImmediateMesh_ywoxc")
 script = ExtResource("5_ywoxc")
 CameraPath = NodePath("../../Camera3D")
 MudMaterial = ExtResource("6_gldam")
+
+[node name="PlayerController" parent="." instance=ExtResource("7_gldam")]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 1.7, 0)
