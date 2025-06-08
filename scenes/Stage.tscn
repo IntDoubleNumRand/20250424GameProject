@@ -57,6 +57,7 @@ data = PackedVector3Array(-0.5, 0.005, 0.5, 0.5, 0.005, 0.5, -0.5, -0.005, 0.5, 
 
 [node name="Stage" type="Node3D"]
 script = ExtResource("1_e0kik")
+CameraPath = NodePath("Camera3D")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_a7mf4")
@@ -71,6 +72,7 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 250)
 
 [node name="Shadows" parent="." instance=ExtResource("3_g44ew")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 100, 0)
+visible = false
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-1, 5.01437e-08, -7.16126e-08, 0, 0.819152, 0.573577, 8.74228e-08, 0.573577, -0.819152, 0, 10, 5)
