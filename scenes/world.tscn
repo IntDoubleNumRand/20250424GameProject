@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://c5dmb0ow6eelw" path="res://scenes/ground.tscn" id="1_kqs1s"]
 [ext_resource type="Script" uid="uid://c3hs8tlgiwsk2" path="res://scripts/Grass.cs" id="2_b3faq"]
 [ext_resource type="PackedScene" uid="uid://b5tco3g5xfhdf" path="res://scenes/Shadows.tscn" id="2_c0d7e"]
-[ext_resource type="Material" uid="uid://cjnd305o3w01" path="res://materials/Green4.tres" id="3_7g83o"]
+[ext_resource type="Material" uid="uid://cjnd305o3w01" path="res://materials/Green1.tres" id="3_7g83o"]
 [ext_resource type="Script" uid="uid://cqymujupl030o" path="res://scripts/PathMeshBuilder.cs" id="4_b3faq"]
 [ext_resource type="Script" uid="uid://djqe0dt0n3o4w" path="res://scripts/PlayerController.cs" id="4_d1c63"]
 [ext_resource type="Material" uid="uid://blg1g22v4cvg6" path="res://materials/Mud.tres" id="5_ygioq"]
@@ -114,7 +114,6 @@ transform = Transform3D(-0.51423, -0.306418, 0.530731, 0, 0.69282, 0.4, -0.61283
 
 [node name="Shadows" parent="." instance=ExtResource("2_c0d7e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -250, 29.8955, 150)
-visible = false
 
 [node name="Node3D" parent="." groups=["Plant"] instance=ExtResource("1_0uv0p")]
 script = ExtResource("2_b3faq")
