@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 [Tool]
-public partial class GroundSpawner : Node3D
+public partial class TerrainSpawner : Node3D
 {
 	public override void _Ready()
 	{
@@ -40,7 +40,7 @@ public partial class GroundSpawner : Node3D
 			);
 			positions.Add(pos);
 
-			GroundBuilder.Create(this)
+			TerrainBuilder.Create(this)
 				.SetWidth((int)rng.RandiRange(30, 39))
 				.SetDepth((int)rng.RandiRange(10, 49))
 				.SetCellSize(1.0f)

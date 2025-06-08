@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 [Tool]
-public partial class Ground : StaticBody3D
+public partial class Terrain : StaticBody3D
 {
 	// Internal components
 	private MeshInstance3D _meshInst;

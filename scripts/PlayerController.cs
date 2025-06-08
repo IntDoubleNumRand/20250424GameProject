@@ -55,8 +55,6 @@ public partial class PlayerController : Node3D
 			}
 			_player.TryPickUpPlant(clickPos);
 		}
-		
-
 	}
 
 	public override void _Process(double delta)
