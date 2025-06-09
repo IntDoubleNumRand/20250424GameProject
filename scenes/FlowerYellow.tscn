@@ -1,11 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://b7nfr5c6qpgr4"]
+[gd_scene load_steps=3 format=3 uid="uid://b7nfr5c6qpgr4"]
 
 [ext_resource type="Texture2D" uid="uid://dx22cs2uap0fx" path="res://assets/yellow_flower.png" id="1_34hrf"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_34hrf"]
+size = Vector3(4, 4, 1)
+
 [node name="Node3D" type="Node3D"]
 
-[node name="FlowerYellow" type="Node3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.06, 0)
+[node name="FlowerYellow" type="StaticBody3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.2, 0)
+collision_layer = 32
+collision_mask = 0
 
 [node name="Sprite3D" type="Sprite3D" parent="FlowerYellow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 texture = ExtResource("1_34hrf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FlowerYellow"]
+shape = SubResource("BoxShape3D_34hrf")

@@ -78,6 +78,7 @@ visible = false
 transform = Transform3D(-1, 5.01437e-08, -7.16126e-08, 0, 0.819152, 0.573577, 8.74228e-08, 0.573577, -0.819152, 0, 10, 5)
 
 [node name="Walls" type="StaticBody3D" parent="."]
+collision_mask = 14
 input_ray_pickable = false
 
 [node name="BackWall" type="MeshInstance3D" parent="Walls"]
@@ -125,6 +126,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 25, 50)
 shape = SubResource("ConcavePolygonShape3D_gldam")
 
 [node name="Ground" type="StaticBody3D" parent="."]
+collision_mask = 14
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
 transform = Transform3D(210, 0, 0, 0, 210, 0, 0, 0, 210, 0, -1.05, -3)

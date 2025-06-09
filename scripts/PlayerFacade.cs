@@ -7,7 +7,8 @@ public class PlayerFacade
 	private Viewport _viewport;
 	private World3D _world;
 	
-	private const uint CLICK_MASK = 1 << 5;
+	private const uint PLANT_MASK = 1 << 5; // Layer 6
+	private const uint WOLF_MASK  = 1 << 2; // Layer 3
 	
 	public PlayerFacade(Camera3D camera, Viewport viewport, World3D world){
 		_camera = camera;
@@ -20,14 +21,14 @@ public class PlayerFacade
 		Input.MouseMode = Input.MouseModeEnum.Visible;
 		//GD.Print("Input action 3: " + Input.MouseMode);
 		var from = _camera.ProjectRayOrigin(mousePos);
-		var to   = from + _camera.ProjectRayNormal(mousePos) * 1000f;
+		var to = from + _camera.ProjectRayNormal(mousePos) * 1000f;
 
 		var space = _world.DirectSpaceState;
 		var query = new PhysicsRayQueryParameters3D
 		{
 			From = from,
 			To = to,
-			CollisionMask = CLICK_MASK
+			CollisionMask = PLANT_MASK
 		};
 
 		var result = space.IntersectRay(query);
@@ -51,14 +52,14 @@ public class PlayerFacade
 	public Wolf TryHitWolf(Vector2 mousePos)
 	{
 		var from = _camera.ProjectRayOrigin(mousePos);
-		var to   = from + _camera.ProjectRayNormal(mousePos) * 1000f;
+		var to = from + _camera.ProjectRayNormal(mousePos) * 1000f;
 
 		var space = _world.DirectSpaceState;
 		var query = new PhysicsRayQueryParameters3D
 		{
 			From = from,
 			To = to,
-			CollisionMask = CLICK_MASK
+			CollisionMask = WOLF_MASK
 		};
 
 		var result = space.IntersectRay(query);

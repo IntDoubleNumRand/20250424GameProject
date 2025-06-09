@@ -10,10 +10,12 @@ size = Vector3(0.4, 0.4, 1.6)
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pdh0q"]
 
 [node name="PlayerController" type="CharacterBody3D" groups=["Shepherd"]]
+collision_layer = 8
+collision_mask = 17
 script = ExtResource("1_3li8b")
 
 [node name="Weapon" type="StaticBody3D" parent="." groups=["Threat"]]
-collision_layer = 7
+collision_layer = 16
 collision_mask = 7
 
 [node name="Sprite3D" type="Sprite3D" parent="Weapon"]
