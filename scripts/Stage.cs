@@ -12,6 +12,8 @@ public partial class Stage : Node3D
 	private Lazy<SheepSpawner> _sheepSpawner;
 	private Lazy<WolfSpawner> _wolfSpawner;
 	private Lazy<PlantSpawner> _plantSpawner;
+	
+	private WorldPathAdapter _adapter; 
 
 	public override void _Ready()
 	{
@@ -30,8 +32,8 @@ public partial class Stage : Node3D
 		var camera = GetNode<Camera3D>(CameraPath);
 		var path = new PathOnScreen();
 		var mapper = new ScreenToWorldMapper(camera);
-		var adapter = new WorldPathAdapter(path, mapper);
-		ISpawnerStrategy terrainStrategy = new TerrainSpawnStrategy(camera.GlobalTransform.Origin, adapter);
+		_adapter = new WorldPathAdapter(path, mapper);
+		ISpawnerStrategy terrainStrategy = new TerrainSpawnStrategy(camera.GlobalTransform.Origin, _adapter);
 		_terrainSpawner = new Lazy<TerrainSpawner>(() =>
 		{
 			var spawner = new TerrainSpawner(terrainStrategy) { Name = "TerrainSpawner" };
@@ -46,7 +48,7 @@ public partial class Stage : Node3D
 		ISpawnerStrategy sheepStrategy = new SheepSpawnStrategy(SheepCount);
 		_sheepSpawner = new Lazy<SheepSpawner>(() =>
 		{
-			var spawner = new SheepSpawner(sheepStrategy, 0) { Name = "SheepSpawner" };
+			var spawner = new SheepSpawner(sheepStrategy, 0, _adapter.GetGoal()) { Name = "SheepSpawner" };
 			AddChild(spawner);
 			return spawner;
 		});

@@ -16,5 +16,10 @@ public partial class VictoryScreen : Control
 			GetTree().ChangeSceneToFile("res://scenes/StartScreen.tscn");
 		};
 		AddChild(button);
+		
+		var cheerSound = new AudioStreamPlayer();
+		cheerSound.Stream = GD.Load<AudioStream>("res://assets/mixkit-birthday-crowd-party-cheer-531.mp3");
+		AddChild(cheerSound);
+		cheerSound.Play();
 	}
 }

@@ -8,11 +8,13 @@ public partial class SheepSpawner : Node3D
 {
 	private readonly Lazy<List<Vector3>> _positions;
 	private readonly int _initialNumber;
+	private readonly Vector3 _goal;
 
-	public SheepSpawner(ISpawnerStrategy strategy, int initialNumber)
+	public SheepSpawner(ISpawnerStrategy strategy, int initialNumber, Vector3 goal)
 	{
 		_initialNumber = initialNumber;
 		_positions = new Lazy<List<Vector3>>(() => strategy.GenerateSpawnPositions());
+		_goal = goal;
 	}
 
 	public override void _Ready()
@@ -22,10 +24,9 @@ public partial class SheepSpawner : Node3D
 		foreach (var pos in _positions.Value)
 			SpawnSheep(scene, pos, num++);
 		var camera = GetTree().Root.GetNode<Camera3D>("Stage/Camera3D");
-		var goal = new WorldPathAdapter(new PathOnScreen(), new ScreenToWorldMapper(camera)).GetGoal();
 		foreach (var sheep in GetTree().GetNodesInGroup("Sheep").OfType<Sheep>())
 		{
-			sheep.SetGoal(goal);
+			sheep.SetGoal(_goal);
 		}
 	}
 
