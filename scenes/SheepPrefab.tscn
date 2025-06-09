@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://buwp208lvp6p8"]
+[gd_scene load_steps=7 format=3 uid="uid://buwp208lvp6p8"]
 
 [ext_resource type="Texture2D" uid="uid://c52s021n75jyn" path="res://assets/sheep_texture.png" id="1_eov8b"]
 [ext_resource type="StyleBox" uid="uid://cp1035gwbrp7r" path="res://assets/ProgressBarBG.tres" id="2_jc844"]
 [ext_resource type="StyleBox" uid="uid://b33xmu3lks6eb" path="res://assets/ProgressBarFill.tres" id="3_t8can"]
+[ext_resource type="Script" uid="uid://vw42epahdk44" path="res://scripts/Sheep.cs" id="10_h1bdy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_thwq7"]
 radius = 0.6
@@ -13,6 +14,7 @@ viewport_path = NodePath("HealthBar3D/SubViewport")
 [node name="SheepPrefab" type="CharacterBody3D"]
 collision_layer = 3
 collision_mask = 3
+script = ExtResource("10_h1bdy")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)

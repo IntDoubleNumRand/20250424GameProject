@@ -26,6 +26,10 @@ public partial class Stage : Node3D
 		});
 
 		_ = terrainSpawner.Value;
+		
+		ISpawnerStrategy sheepStrategy = new SheepSpawnStrategy();
+		var sheepSpawner = new Lazy<SheepSpawner>(() => { var s = new SheepSpawner(sheepStrategy, 0); AddChild(s); return s; });
+		_ = sheepSpawner.Value;
 	}
 	
 	public override void _UnhandledInput(InputEvent @event)

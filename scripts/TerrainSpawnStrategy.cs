@@ -61,7 +61,7 @@ public class TerrainSpawnStrategy : ISpawnerStrategy
 			while ((positions.Exists(p => p.DistanceTo(pos) < minPathDistance)
 					|| (pos - _camPos).Length() < _excludeRadius
 					|| IsNearPath(pos, minPathDistance))
-				   && attempts < 100);
+				   && attempts < 20);
 
 			positions.Add(pos);
 		}
