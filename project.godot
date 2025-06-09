@@ -27,6 +27,10 @@ window/size/viewport_width=1299
 
 project/assembly_name="ShepherdGame"
 
+[global_group]
+
+Plant=""
+
 [input]
 
 save_sheep={
