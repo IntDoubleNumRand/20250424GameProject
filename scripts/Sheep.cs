@@ -65,9 +65,9 @@ public partial class Sheep : AnimalContext<Sheep>
 
 		if (dir == Vector3.Zero) return;
 		float angle = Mathf.RadToDeg(Mathf.Atan2(dir.X, dir.Z));
-		int frame = Mathf.Abs(angle) < 45 ? 0
-				  : angle > 45 && angle < 135 ? 3
-				  : Mathf.Abs(angle) > 135 ? 2 : 1;
+		int frame = Mathf.Abs(angle) < 45 ? 2
+				  : angle > 45 && angle < 135 ? 1
+				  : Mathf.Abs(angle) > 135 ? 0 : 3;
 		_sprite.Frame = frame;
 	}
 

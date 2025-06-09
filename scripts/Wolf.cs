@@ -57,19 +57,18 @@ public partial class Wolf : AnimalContext<Wolf>
 		else
 			ChangeState(WanderingState);
 	}
-
-
+	
 	public override void PostPhysicsUpdate(Vector3 moveDir, double delta)
 	{
 		base.PostPhysicsUpdate(moveDir, delta);
 		if (moveDir == Vector3.Zero) return;
 		float angle = Mathf.RadToDeg(Mathf.Atan2(moveDir.X, moveDir.Z));
-		int frame = Mathf.Abs(angle) < 45 ? 0
-				  : angle > 45 && angle < 135 ? 3
-				  : Mathf.Abs(angle) > 135 ? 2: 1;
+		int frame = Mathf.Abs(angle) < 45 ? 2
+				  : angle > 45 && angle < 135 ? 1
+				  : Mathf.Abs(angle) > 135 ? 0: 3;
 		_sprite.Frame = frame;
 	}
-
+	
 	private void ScanEnvironment()
 	{
 		PreyTarget = FindNearest("Sheep", HuntRange);
@@ -87,13 +86,13 @@ public partial class Wolf : AnimalContext<Wolf>
 		}
 		return best;
 	}
-
+	
 	protected override void Die()
 	{
 		GD.Print("Wolf died");
 		base.Die();
 	}
-
+	
 	private void InitializeWanderTarget()
 	{
 		float r = 12f;
@@ -101,13 +100,13 @@ public partial class Wolf : AnimalContext<Wolf>
 			(_rng.NextSingle() - 0.5f)*r, 0, (_rng.NextSingle() - 0.5f)*r
 		);
 	}
-
+	
 	public Vector3 FlatDirection(Vector3 v)
 	{
 		v.Y = 0;
 		return v.Normalized();
 	}
-
+	
 	private class WolfFleeingState : IAnimalState<Wolf>
 	{
 		public void Enter(Wolf w) => GD.Print("Wolf: Fleeing");
@@ -117,7 +116,7 @@ public partial class Wolf : AnimalContext<Wolf>
 			w.Threat == null ? Vector3.Zero
 				: w.FlatDirection(w.GlobalPosition - w.Threat.GlobalPosition);
 	}
-
+	
 	private class WolfHuntingState : IAnimalState<Wolf>
 	{
 		public void Enter(Wolf w) => GD.Print("Wolf: Hunting");
@@ -127,19 +126,19 @@ public partial class Wolf : AnimalContext<Wolf>
 			w.PreyTarget == null ? Vector3.Zero
 				: w.FlatDirection(w.PreyTarget.GlobalPosition - w.GlobalPosition);
 	}
-
+	
 	private class WolfEatingState : IAnimalState<Wolf>
 	{
 		private float _eatTimer = 0f;
-
+		
 		public void Enter(Wolf w)
 		{
 			GD.Print("Wolf Eating");
 			_eatTimer = 0f;
 		}
-
+		
 		public void Exit(Wolf w) { }
-
+		
 		public void Update(Wolf w, double dt)
 		{
 			if (!(w.PreyTarget is Sheep sheep) || !Godot.GodotObject.IsInstanceValid(sheep))
@@ -147,7 +146,7 @@ public partial class Wolf : AnimalContext<Wolf>
 				w.ChangeState(w.WanderingState);
 				return;
 			}
-
+			
 			_eatTimer += (float)dt;
 			if (_eatTimer >= 1f)
 			{
@@ -156,10 +155,10 @@ public partial class Wolf : AnimalContext<Wolf>
 				_eatTimer = 0f;
 			}
 		}
-
+		
 		public Vector3 GetMoveDirection(Wolf w) => Vector3.Zero;
 	}
-
+	
 	private class WolfWanderingState : IAnimalState<Wolf>
 	{
 		public void Enter(Wolf w) => GD.Print("Wolf: Wandering");

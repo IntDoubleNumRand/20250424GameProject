@@ -7,6 +7,8 @@ public class PlayerFacade
 	private Viewport _viewport;
 	private World3D _world;
 	
+	private const uint CLICK_MASK = 1 << 5;
+	
 	public PlayerFacade(Camera3D camera, Viewport viewport, World3D world){
 		_camera = camera;
 		_viewport = viewport;
@@ -25,7 +27,7 @@ public class PlayerFacade
 		{
 			From = from,
 			To = to,
-			CollisionMask = 1 << 1
+			CollisionMask = CLICK_MASK
 		};
 
 		var result = space.IntersectRay(query);
@@ -56,7 +58,7 @@ public class PlayerFacade
 		{
 			From = from,
 			To = to,
-			CollisionMask = 1 << 1
+			CollisionMask = CLICK_MASK
 		};
 
 		var result = space.IntersectRay(query);
