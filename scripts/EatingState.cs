@@ -8,7 +8,7 @@ public class EatingState : IAnimalState<Sheep>
 
 	public void Update(Sheep sheep, double delta)
 	{
-		if (sheep.PlantTarget == null)
+		if (!Godot.GodotObject.IsInstanceValid(sheep.PlantTarget))
 		{
 			sheep.ChangeState(sheep.WanderingState);
 			return;

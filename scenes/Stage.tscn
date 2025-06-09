@@ -75,7 +75,7 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 100, 0)
 visible = false
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-1, 5.01437e-08, -7.16126e-08, 0, 0.819152, 0.573577, 8.74228e-08, 0.573577, -0.819152, 0, 10, 5)
+transform = Transform3D(-1, 8.66077e-08, -1.23689e-07, 0, 0.819152, 0.573577, 1.50996e-07, 0.573577, -0.819152, 0, 10, 5)
 
 [node name="Walls" type="StaticBody3D" parent="."]
 collision_mask = 14

@@ -6,7 +6,7 @@ public partial class Wolf : AnimalContext<Wolf>
 {
 	[Export] public float AvoidDistance = 8f;
 	[Export] public float HuntRange = 15f;
-	[Export] public float EatDistance = 1.5f;
+	[Export] public float EatDistance = 5f;
 	[Export] public float CheckInterval = 1f;
 
 	internal Node3D  Threat { get; private set; }
@@ -50,8 +50,10 @@ public partial class Wolf : AnimalContext<Wolf>
 		// Transition logic
 		if (Threat != null && dThreat < AvoidDistance)
 			ChangeState(FleeingState);
-		else if (PreyTarget != null && dPrey <= EatDistance)
+		else if (PreyTarget != null && dPrey <= EatDistance){
+			GD.Print($"PreyTarget: {PreyTarget}");
 			ChangeState(EatingState);
+		}
 		else if (PreyTarget != null)
 			ChangeState(HuntingState);
 		else

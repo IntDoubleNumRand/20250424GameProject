@@ -12,7 +12,7 @@ height = 4.4
 [sub_resource type="ViewportTexture" id="2"]
 viewport_path = NodePath("HealthBar3D/SubViewport")
 
-[node name="WolfPrefab" type="CharacterBody3D"]
+[node name="WolfPrefab" type="CharacterBody3D" groups=["Wolf"]]
 collision_layer = 4
 collision_mask = 19
 script = ExtResource("4")

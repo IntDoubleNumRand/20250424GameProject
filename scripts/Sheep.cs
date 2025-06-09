@@ -6,7 +6,7 @@ public partial class Sheep : AnimalContext<Sheep>
 {
 	[Export] public float AvoidDistance = 10f;
 	[Export] public float AttractionRange = 10f;
-	[Export] public float EatDistance = 0.1f;
+	[Export] public float EatDistance = 4f;
 	[Export] public float MinFollowDist = 2f;
 	[Export] public float MaxFollowDist = 6f;
 	[Export] public float CheckInterval = 1f;
@@ -110,6 +110,7 @@ public partial class Sheep : AnimalContext<Sheep>
 	{
 		GD.Print($"{Name} ate plant at {plant.GlobalPosition}");
 		plant.QueueFree();
+		PlantTarget = null;
 		Heal(5);
 		GD.Print($"{Name} health is now {Health}");
 	}

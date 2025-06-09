@@ -30,6 +30,8 @@ project/assembly_name="ShepherdGame"
 [global_group]
 
 Plant=""
+Wolf=""
+Sheep=""
 
 [input]
 
