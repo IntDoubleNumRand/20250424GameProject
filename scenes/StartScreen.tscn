@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://bda58q7eatrgh"]
+[gd_scene load_steps=4 format=3 uid="uid://bda58q7eatrgh"]
 
 [ext_resource type="Script" uid="uid://ytbla2j4p0ij" path="res://scripts/StartScreen.cs" id="1_4vrcr"]
+[ext_resource type="Shader" uid="uid://c7rysoj7tcqt7" path="res://shaders/face.gdshader" id="2_pswtb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a0vbq"]
+resource_local_to_scene = true
+shader = ExtResource("2_pswtb")
+shader_parameter/line_width = 0.008
 
 [node name="StartScreen" type="Control"]
 layout_mode = 3
@@ -10,3 +16,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4vrcr")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_a0vbq")
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -699.0
+offset_top = -224.0
+offset_right = -659.0
+offset_bottom = -184.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(10, 10)
