@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [Tool]
 public partial class SheepSpawner : Node3D
@@ -20,6 +21,12 @@ public partial class SheepSpawner : Node3D
 		int num = _initialNumber;
 		foreach (var pos in _positions.Value)
 			SpawnSheep(scene, pos, num++);
+		var camera = GetTree().Root.GetNode<Camera3D>("Stage/Camera3D");
+		var goal = new WorldPathAdapter(new PathOnScreen(), new ScreenToWorldMapper(camera)).GetGoal();
+		foreach (var sheep in GetTree().GetNodesInGroup("Sheep").OfType<Sheep>())
+		{
+			sheep.SetGoal(goal);
+		}
 	}
 
 	private void SpawnSheep(PackedScene scene, Vector3 pos, int number)

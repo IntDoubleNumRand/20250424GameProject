@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="ShepherdGame"
-run/main_scene="uid://b1va324lkdoyl"
+run/main_scene="uid://bda58q7eatrgh"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 

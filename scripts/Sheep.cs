@@ -24,6 +24,24 @@ public partial class Sheep : AnimalContext<Sheep>
 	private Sprite3D _sprite;
 	private Timer _scanTimer;
 	private Random _rng = new();
+	
+	private Vector3 _goalPoint;
+
+	public void SetGoal(Vector3 goal)
+	{
+		_goalPoint = goal;
+	}
+
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
+		GD.Print($"Distance: {GlobalPosition.DistanceTo(_goalPoint)}");
+		if (GlobalPosition.DistanceTo(_goalPoint) < 25.0f)
+		{
+			SheepManager.Instance?.RecordSheepReached(GetInstanceId().ToString());
+			QueueFree();
+		}
+	}
 
 	public override void _Ready()
 	{

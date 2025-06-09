@@ -9,6 +9,62 @@ public partial class SheepManager : Node
 	private string SaveFilePath => "res://saves/sheep_save.json";
 
 	private Dictionary<string, SheepRecord> _sheepRecords = new();
+	
+	public int TotalSheep { get; private set; }
+	public int SheepReachedGoal { get; private set; }
+	public bool GameEnded { get; private set; } = false;
+
+	public void InitializeSheepCount(int total)
+	{
+		TotalSheep = total;
+		SheepReachedGoal = 0;
+		GameEnded = false;
+	}
+
+	public void RecordSheepReached(string id)
+	{
+		if (GameEnded) return;
+		SheepReachedGoal++;
+		GD.Print($"{id} reached goal. Total: {SheepReachedGoal}");
+		if (SheepReachedGoal >= TotalSheep)
+		{
+			GameEnded = true;
+			ShowVictoryScreen();
+		}
+	}
+
+	public new void RecordSheepDeath(string id)
+	{
+		if (GameEnded) return;
+		
+		if (_sheepRecords.TryGetValue(id, out var record))
+		{
+			record.DeathTime = DateTime.UtcNow;
+			SaveSheep();
+		}
+		
+		GameEnded = true;
+		ShowGameOverScreen();
+	}
+	
+	public void ResetGameState()
+	{
+		TotalSheep = 0;
+		SheepReachedGoal = 0;
+		GameEnded = false;
+		_sheepRecords.Clear();
+		SaveSheep();
+	}
+
+	private void ShowVictoryScreen()
+	{
+		GetTree().ChangeSceneToFile("res://scenes/VictoryScreen.tscn");
+	}
+
+	private void ShowGameOverScreen()
+	{
+		GetTree().ChangeSceneToFile("res://scenes/GameOverScreen.tscn");
+	}
 
 	public override void _Ready()
 	{
@@ -28,15 +84,6 @@ public partial class SheepManager : Node
 			DeathTime = null
 		};
 		SaveSheep();
-	}
-
-	public void RecordSheepDeath(string id)
-	{
-		if (_sheepRecords.TryGetValue(id, out var record))
-		{
-			record.DeathTime = DateTime.UtcNow;
-			SaveSheep();
-		}
 	}
 
 	public void SaveSheep()

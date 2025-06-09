@@ -15,6 +15,10 @@ public partial class Stage : Node3D
 
 	public override void _Ready()
 	{
+		var settings = (Godot.Collections.Dictionary<string, int>)GetTree().Root.GetMeta("GameSettings");
+		SheepCount = settings["sheep"];
+		WolfCount = settings["wolf"];
+		SheepManager.Instance?.InitializeSheepCount(SheepCount);
 		SetupTerrainSpawner();
 		SetupSheepSpawner();
 		SetupWolfSpawner();
@@ -91,6 +95,16 @@ public partial class Stage : Node3D
 		if (Input.IsActionJustPressed("reload_stage"))
 		{
 			GD.Print("You pressed R");
+
+			foreach (var sheep in GetTree().GetNodesInGroup("Sheep"))
+			{
+				if (sheep is Node node)
+				{
+					node.QueueFree();
+				}
+			}
+
+			SheepManager.Instance?.ResetGameState();
 			GetTree().ReloadCurrentScene();
 		}
 	}
